@@ -20,6 +20,6 @@ $role = $_SESSION['role'];
 <body>
     <h1>Welcome to the Employee Dashboard!</h1>
     <p>Your Role: <?php echo htmlspecialchars($role); ?></p>
-    <p><a href="logout.php">Logout</a></p>
+    <a href="../logout.php">Logout</a>
 </body>
 </html>
