@@ -46,4 +46,24 @@ class BookingModel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function get_assigned_bookings($mover_id) {
+        $query = '
+            SELECT 
+                B.BookingID,
+                B.Date,
+                B.PickupAddress,
+                B.Truck,
+                B.DeliveryAddress,
+                B.Status
+            FROM Bookings B
+            JOIN BookingMovers BM ON B.BookingID = BM.BookingID
+            WHERE BM.MoverID = :mover_id
+            ORDER BY B.Date DESC;
+        ';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':mover_id', $mover_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }

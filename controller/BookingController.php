@@ -22,7 +22,7 @@ class BookingController {
         $booking = $this->bookingModel->get_booking_by_id($booking_id);
 
         // Pass booking data to the view
-        require 'views/booking_view.php';
+        require 'view/BookingView.php';
     }
 
     // Display all bookings
@@ -39,6 +39,23 @@ class BookingController {
         $bookings = $this->bookingModel->get_all_bookings();
 
         // Pass bookings data to the view
-        require 'views/booking_list.php';
+        require 'view/BookingList.php';
     }
+
+
+public function list_assigned_bookings($user_id) {
+    session_start();
+
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: /');
+        exit;
+    }
+
+    // Fetch assigned bookings
+    $bookings = $this->bookingModel->get_assigned_bookings($user_id);
+
+    // Pass bookings data to the view
+    require 'view/BookingList.php';
+}
+
 }
