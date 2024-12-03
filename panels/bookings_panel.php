@@ -29,7 +29,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($booking['PickupAddress']); ?></td>
                     <td><?php echo htmlspecialchars($booking['DeliveryAddress']); ?></td>
                     <td><?php echo htmlspecialchars($booking['Truck']); ?></td>
-                    <td><?php echo htmlspecialchars($booking)[Truck]</td>
+                    <!-- <td><?php #echo htmlspecialchars($booking)[Truck]?></td> -->
                     <td>
                         <!-- Delete Booking Action -->
                         <form method="POST" action="delete_booking.php" style="display:inline;">

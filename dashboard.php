@@ -20,7 +20,7 @@ include 'templates/header.php'; // Include shared header
 include 'templates/nav.php'; // Include navigation (optional)
 ?>
 <div class="container">
-    <h1>Admin Dashboard</h1>
+    <h1>MoveMeNow Dashboard</h1>
     <p>Welcome, <?php echo htmlspecialchars($_SESSION['role']); ?>!</p>
 
     <div class="dashboard-panels">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 02, 2024 at 10:06 AM
+-- Generation Time: Dec 03, 2024 at 09:27 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -32,8 +32,18 @@ CREATE TABLE `Bookings` (
   `Date` date NOT NULL,
   `PickupAddress` varchar(255) NOT NULL,
   `Truck` int(11) NOT NULL,
-  `DeliveryAddress` varchar(255) NOT NULL
+  `DeliveryAddress` varchar(255) NOT NULL,
+  `PickedUp` tinyint(1) DEFAULT 0,
+  `Delivered` tinyint(1) DEFAULT 0,
+  `BookingCompleted` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Bookings`
+--
+
+INSERT INTO `Bookings` (`BookingID`, `Date`, `PickupAddress`, `Truck`, `DeliveryAddress`, `PickedUp`, `Delivered`, `BookingCompleted`) VALUES
+(1, '2024-12-07', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -71,6 +81,13 @@ CREATE TABLE `Movers` (
   `ContactInfo` varchar(255) DEFAULT NULL,
   `OtherDetails` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Movers`
+--
+
+INSERT INTO `Movers` (`MoverID`, `Name`, `ContactInfo`, `OtherDetails`) VALUES
+(1, 'John Doe', '778-555-5555', 'Experienced with Fragile Objects');
 
 -- --------------------------------------------------------
 
@@ -121,7 +138,7 @@ ALTER TABLE `Trucks`
 -- AUTO_INCREMENT for table `Bookings`
 --
 ALTER TABLE `Bookings`
-  MODIFY `BookingID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `BookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Employees`
@@ -133,7 +150,7 @@ ALTER TABLE `Employees`
 -- AUTO_INCREMENT for table `Movers`
 --
 ALTER TABLE `Movers`
-  MODIFY `MoverID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MoverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Trucks`
