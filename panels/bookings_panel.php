@@ -17,6 +17,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th>Pickup Address</th>
             <th>Delivery Address</th>
             <th>Truck ID</th>
+            <th>Completed</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -29,6 +30,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($booking['PickupAddress']); ?></td>
                     <td><?php echo htmlspecialchars($booking['DeliveryAddress']); ?></td>
                     <td><?php echo htmlspecialchars($booking['Truck']); ?></td>
+                    <td><?php echo htmlspecialchars($booking['BookingCompleted'] == '1' ? 'True' : 'False'); ?></td>
                     <!-- <td><?php #echo htmlspecialchars($booking)[Truck]?></td> -->
                     <td>
                         <!-- Delete Booking Action -->
@@ -61,6 +63,9 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <br>
     <label for="truck">Truck ID:</label>
     <input type="number" id="truck" name="truck" required>
+    <br>
+    <label for="completed"> Completed:</label>
+    <input type="checkbox" id="completed" name="completed" value="0">
     <br>
     <button type="submit">Add Booking</button>
 </form>
