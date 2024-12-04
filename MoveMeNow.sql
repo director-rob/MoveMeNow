@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2024 at 09:27 AM
+-- Generation Time: Dec 04, 2024 at 09:04 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,24 @@ SET time_zone = "+00:00";
 --
 -- Database: `MoveMeNow`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `BookingMovers`
+--
+
+CREATE TABLE `BookingMovers` (
+  `BookingID` int(11) NOT NULL,
+  `MoverID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `BookingMovers`
+--
+
+INSERT INTO `BookingMovers` (`BookingID`, `MoverID`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -43,7 +61,8 @@ CREATE TABLE `Bookings` (
 --
 
 INSERT INTO `Bookings` (`BookingID`, `Date`, `PickupAddress`, `Truck`, `DeliveryAddress`, `PickedUp`, `Delivered`, `BookingCompleted`) VALUES
-(1, '2024-12-07', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 0, 0, 0);
+(1, '2024-12-07', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 1, 1, 0),
+(2, '2024-12-07', 'address 1', 2, 'address 2', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -67,7 +86,8 @@ CREATE TABLE `Employees` (
 
 INSERT INTO `Employees` (`EmployeeID`, `FirstName`, `LastName`, `DateJoined`, `Role`, `Username`, `Password`) VALUES
 (1, 'John', 'Doe', '2023-06-15', 'Mover', 'JohnDoe', '$2y$10$sokiU9ihGyIkpHaNUGjtSOexHZvvYcNsECCcyooKCvRPmD/cktbN6'),
-(2, 'Jane', 'Smith', '2021-02-20', 'Manager', 'JaneSmith', '$2y$10$fZWIWbhj2G/6kSqxzaOwoumD60l.Ra/rkTCyDExSENFhh8z6KZaui');
+(2, 'Jane', 'Smith', '2021-02-20', 'Manager', 'JaneSmith', '$2y$10$fZWIWbhj2G/6kSqxzaOwoumD60l.Ra/rkTCyDExSENFhh8z6KZaui'),
+(4, 'James', 'Smith', '2024-12-04', 'Mover', 'jamessmith', '$2y$10$tGLiogktA7vqPb6zYnO3tOC1Vt.6wNSDjTlKY3Wy3L8MHIWp12CkW');
 
 -- --------------------------------------------------------
 
@@ -87,7 +107,8 @@ CREATE TABLE `Movers` (
 --
 
 INSERT INTO `Movers` (`MoverID`, `Name`, `ContactInfo`, `OtherDetails`) VALUES
-(1, 'John Doe', '778-555-5555', 'Experienced with Fragile Objects');
+(1, 'John Doe', '778-555-5555', 'Experienced with Fragile Objects'),
+(4, 'James Smith', '778-882-8888', NULL);
 
 -- --------------------------------------------------------
 
@@ -98,12 +119,21 @@ INSERT INTO `Movers` (`MoverID`, `Name`, `ContactInfo`, `OtherDetails`) VALUES
 CREATE TABLE `Trucks` (
   `TruckID` int(11) NOT NULL,
   `LicensePlate` varchar(20) NOT NULL,
-  `SizeInFeet` int(11) NOT NULL
+  `SizeInFeet` int(11) NOT NULL,
+  `Make` varchar(16) NOT NULL,
+  `Model` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `BookingMovers`
+--
+ALTER TABLE `BookingMovers`
+  ADD KEY `fk_booking` (`BookingID`),
+  ADD KEY `fk_mover` (`MoverID`);
 
 --
 -- Indexes for table `Bookings`
@@ -138,25 +168,36 @@ ALTER TABLE `Trucks`
 -- AUTO_INCREMENT for table `Bookings`
 --
 ALTER TABLE `Bookings`
-  MODIFY `BookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `BookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Employees`
 --
 ALTER TABLE `Employees`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Movers`
 --
 ALTER TABLE `Movers`
-  MODIFY `MoverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MoverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Trucks`
 --
 ALTER TABLE `Trucks`
   MODIFY `TruckID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `BookingMovers`
+--
+ALTER TABLE `BookingMovers`
+  ADD CONSTRAINT `fk_booking` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`),
+  ADD CONSTRAINT `fk_mover` FOREIGN KEY (`MoverID`) REFERENCES `Movers` (`MoverID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
