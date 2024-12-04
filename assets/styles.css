@@ -32,3 +32,55 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #d32f2f; /* Darker red when hovered */
 }
+.status-toggle {
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+}
+
+.status-toggle.completed {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.status-toggle.pending {
+    background-color: #f44336;
+    color: white;
+}
+
+.status-toggle:hover {
+    opacity: 0.9;
+}
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}

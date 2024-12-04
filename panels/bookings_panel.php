@@ -9,6 +9,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- Display Bookings Table -->
+<h2>Bookings</h2>
 <table border="1">
     <thead>
         <tr>
@@ -33,12 +34,14 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($booking['BookingCompleted'] == '1' ? 'True' : 'False'); ?></td>
                     <!-- <td><?php #echo htmlspecialchars($booking)[Truck]?></td> -->
                     <td>
-                        <!-- Delete Booking Action -->
-                        <form method="POST" action="delete_booking.php" style="display:inline;">
+                        <form method="POST" action="update_booking_status.php" style="display:inline;">
                             <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars($booking['BookingID']); ?>">
-                            <button type="submit">Delete</button>
+                            <input type="hidden" name="current_status" value="<?php echo htmlspecialchars($booking['BookingCompleted']); ?>">
+                            <button type="submit" class="status-toggle <?php echo $booking['BookingCompleted'] == '1' ? 'completed' : 'pending'; ?>">
+                                <?php echo $booking['BookingCompleted'] == '1' ? 'Completed' : 'Pending'; ?>
+                            </button>
                         </form>
-                    </td>
+                    </td>   
                 </tr>
             <?php endforeach; ?>
         <?php else: ?>

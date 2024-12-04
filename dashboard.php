@@ -27,19 +27,16 @@ include 'templates/nav.php'; // Include navigation (optional)
         <?php if ($_SESSION['role'] === 'Manager'): ?>
             <!-- Bookings Panel -->
             <div class="panel" id="bookings-panel">
-                <h2>Bookings</h2>
                 <?php include 'panels/bookings_panel.php'; ?>
             </div>
 
             <!-- Employees Panel -->
             <div class="panel" id="employees-panel">
-                <h2>Employees</h2>
                 <?php include 'panels/employees_panel.php'; ?>
             </div>
 
             <!-- Movers Panel -->
             <div class="panel" id="movers-panel">
-                <h2>Movers</h2>
                 <?php include 'panels/movers_panel.php'; ?>
             </div>
 
