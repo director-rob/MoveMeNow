@@ -1,7 +1,10 @@
 <nav class="navbar">
-    <a href="dashboard.php">Dashboard</a>
-    <!-- Other navigation links can go here -->
-    <a href="my_account.php" style="float: center;">My Account</a>
-    <a href="logout.php" style="float: center;">Logout</a>
-    
+    <div class="nav-left">
+        <a href="dashboard.php" class="nav-button">Dashboard</a>
+    </div>
+    <div class="nav-right">
+        <a href="my_account.php" class="nav-button">My Account</a>
+        <a href="logout.php" class="nav-button">Logout</a>
+    </div>
 </nav>
+

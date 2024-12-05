@@ -154,3 +154,50 @@ textarea {
         /*width: 250px; /* or any other reasonable width */
         max-width: 100%;
     }
+
+.navbar {
+    background-color: #e3f2fd; /* Light blue */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-right {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    background-color: #007bff; /* Darker blue */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #004b9b;; /* Slightly lighter blue on hover */
+    text-decoration: none;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                 Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin: 0;
+    line-height: 1.4;
+    background-color: #f1f9ff; /* Light blue background */
+}
+
+.movers-selection {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.mover-option {
+    margin: 5px 0;
+}
