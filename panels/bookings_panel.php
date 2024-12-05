@@ -92,7 +92,7 @@ $query = '
             <input type="text" id="delivery" name="delivery" required>
             <br>
             <label for="truck">Truck ID:</label>
-            <input type="number" id="truck" name="truck" required>
+            <input type="number" id="truck" name="truck" min="1" required>
             <br>
             <label for="completed">Completed:</label>
             <input type="checkbox" id="completed" name="completed" value="0">
@@ -121,7 +121,7 @@ $query = '
     </div>
 </div>
 
-<!-- Add edit form modal/popup -->
+<!-- Edit form modal/popup -->
 <div id="editBookingModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeEditForm()">&times;</span>
@@ -146,7 +146,7 @@ $query = '
             
             <div class="form-group">
                 <label for="edit_truck">Truck ID:</label>
-                <input type="number" id="edit_truck" name="truck" required>
+                <input type="number" id="edit_truck" name="truck" min = 1 required>
             </div>
             
             <div class="form-group">
@@ -166,7 +166,10 @@ $query = '
                 </div>
             </div>
             
-            <button type="submit">Update Booking</button>
+            <div class="button-group">
+                <button type="submit" class="update-button">Update Booking</button>
+                <button type="button" class="delete-button" onclick="deleteBooking()">Delete Booking</button>
+            </div>
         </form>
     </div>
 </div>
@@ -184,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
         section.classList.add('collapsed');
     });
 });
-
 
 function showEditForm(bookingId) {
     // Fetch booking details via AJAX
@@ -215,6 +217,20 @@ function closeEditForm() {
 window.onclick = function(event) {
     if (event.target == document.getElementById('editBookingModal')) {
         closeEditForm();
+    }
+}
+
+document.write(`
+    <form id="deleteBookingForm" method="POST" action="delete_booking.php" style="display: none;">
+        <input type="hidden" name="booking_id" id="delete_booking_id">
+    </form>
+`);
+
+function deleteBooking() {
+    if (confirm('Are you sure you want to delete this booking? This action cannot be undone.')) {
+        const bookingId = document.getElementById('edit_booking_id').value;
+        document.getElementById('delete_booking_id').value = bookingId;
+        document.getElementById('deleteBookingForm').submit();
     }
 }
 </script>
