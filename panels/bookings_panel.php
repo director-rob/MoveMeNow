@@ -1,20 +1,13 @@
 <?php
 require_once 'db.php'; // Database connection
 
-// Fetch all bookings
-$query = 'SELECT * FROM Bookings ORDER BY Date DESC';
-$stmt = $db->prepare($query);
-$stmt->execute();
-$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-<?php
-// Add to top of bookings_panel.php to fetch movers
+// Fetch all movers
 $moversQuery = 'SELECT MoverID, Name FROM Movers';
 $stmt = $db->prepare($moversQuery);
 $stmt->execute();
 $movers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Modify the bookings query to include mover information
+// Fetch all bookings
 $query = '
     SELECT 
         B.*,
@@ -25,6 +18,9 @@ $query = '
     GROUP BY B.BookingID
     ORDER BY B.Date DESC
 ';
+$stmt = $db->prepare($query);
+$stmt->execute();
+$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- Display Bookings Table -->
@@ -67,13 +63,11 @@ $query = '
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="6">No bookings found.</td>
+                <td colspan="8">No bookings found.</td>
             </tr>
         <?php endif; ?>
     </tbody>
 </table>
-
-
 
 <!-- Add Booking Form -->
 <div class="collapsible-section">
@@ -83,7 +77,7 @@ $query = '
     <div id="add-booking" class="collapsible-content">
         <form method="POST" action="create_booking.php">
             <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
+            <input type="date" id="date" name="date" required onchange="fetchAvailableTrucks(this.value, 'truck')">
             <br>
             <label for="pickup">Pickup Address:</label>
             <input type="text" id="pickup" name="pickup" required>
@@ -92,15 +86,13 @@ $query = '
             <input type="text" id="delivery" name="delivery" required>
             <br>
             <label for="truck">Truck ID:</label>
-            <input type="number" id="truck" name="truck" min="1" required>
+            <select id="truck" name="truck" required>
+                <option value="">Select a truck</option>
+            </select>
             <br>
             <label for="completed">Completed:</label>
             <input type="checkbox" id="completed" name="completed" value="0">
             <br>
-            
-            
-
-            <!-- Add movers selection -->
             <label>Assign Movers:</label>
             <div class="movers-selection">
                 <?php foreach ($movers as $mover): ?>
@@ -115,7 +107,6 @@ $query = '
                     </div>
                 <?php endforeach; ?>
             </div>
-            
             <button type="submit">Add Booking</button>
         </form>
     </div>
@@ -131,7 +122,7 @@ $query = '
             
             <div class="form-group">
                 <label for="edit_date">Date:</label>
-                <input type="date" id="edit_date" name="date" required>
+                <input type="date" id="edit_date" name="date" required onchange="fetchAvailableTrucks(this.value, 'edit_truck')">
             </div>
             
             <div class="form-group">
@@ -146,7 +137,9 @@ $query = '
             
             <div class="form-group">
                 <label for="edit_truck">Truck ID:</label>
-                <input type="number" id="edit_truck" name="truck" min = 1 required>
+                <select id="edit_truck" name="truck" required>
+                    <option value="">Select a truck</option>
+                </select>
             </div>
             
             <div class="form-group">
@@ -218,6 +211,21 @@ window.onclick = function(event) {
     if (event.target == document.getElementById('editBookingModal')) {
         closeEditForm();
     }
+}
+
+function fetchAvailableTrucks(date, elementId) {
+    fetch(`get_available_trucks.php?date=${date}`)
+        .then(response => response.json())
+        .then(trucks => {
+            const select = document.getElementById(elementId);
+            select.innerHTML = '<option value="">Select a truck</option>';
+            trucks.forEach(truck => {
+                const option = document.createElement('option');
+                option.value = truck.TruckID;
+                option.textContent = `${truck.TruckID} -  ${truck.Make} ${truck.Model}, ${truck.SizeInFeet} ft, ${truck.LicensePlate}`;
+                select.appendChild(option);
+            });
+        });
 }
 
 document.write(`

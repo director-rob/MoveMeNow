@@ -15,6 +15,12 @@ body {
 h1, h2, h3, h4, h5, h6, p, span, a, label, td, th {
     font-family: Arial, Helvetica, sans-serif;
 }
+h1 {
+    padding-bottom: 10px;
+    text-align: center;
+        margin: auto; /* Center horizontally */
+        position: relative; /* For proper stacking context */
+}
 
 .container {
     max-width: 1200px;
@@ -284,4 +290,169 @@ body {
 
 .delete-button:hover {
     background-color: #c82333;
+}
+
+
+.action-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: auto;
+    min-width: 200px;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+.reset-button {
+    background-color: #ffc107;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.reset-button:hover {
+    background-color: #e0a800;}
+
+    /* Add/update styles in assets/styles.css */
+
+
+    
+    /* Update login container styles */
+    .login-container {
+        background: #f9f9f9;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        margin: auto; /* Center horizontally */
+        position: relative; /* For proper stacking context */
+    }
+
+.login-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.login-container button:hover {
+    background-color: #0056b3;
+}
+
+.remove-button {
+    background-color: #dc3545; /* Red color */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: auto;
+    min-width: 200px;
+}
+
+.remove-button:hover {
+    background-color: #c82333;
+}
+
+.toggle-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.toggle-button.picked-up {
+    background-color: green;
+}
+
+.toggle-button.picked-up.undo {
+    background-color: red;
+}
+
+.toggle-button.delivered {
+    background-color: green;
+}
+
+.toggle-button.delivered.undo {
+    background-color: red;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+table thead th {
+    border: none;
+}
+
+table tbody tr {
+    transition: background-color 0.3s;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
 }

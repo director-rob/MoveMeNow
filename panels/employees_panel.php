@@ -69,7 +69,6 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <!-- Add New Employee Form -->
-<h3>Add New Employee</h3>
 <div class="collapsible-section">
     <button type="button" class="collapse-toggle" onclick="toggleSection('add-employee')">
         <span class="toggle-icon">▼</span> Add New Employee
@@ -116,6 +115,64 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
+<!-- Add to employees_panel.php after the tables but before the Add Employee section -->
+<div class="button-group">
+    <button type="button" class="action-button" onclick="showPasswordResetModal()">Reset Employee Password</button>
+    <button type="button" class="remove-button" onclick="showRemoveEmployeeModal()">Remove Employee</button>
+</div>
+
+<!-- Add Password Reset Modal -->
+<div id="passwordResetModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closePasswordResetModal()">&times;</span>
+        <h3>Reset Employee Password</h3>
+        <form method="POST" action="reset_password.php" id="passwordResetForm">
+            <div class="form-group">
+                <label for="employee_select">Select Employee:</label>
+                <select id="employee_select" name="employee_id" required>
+                    <option value="">Select an employee...</option>
+                    <?php foreach ($employees as $employee): ?>
+                        <option value="<?php echo htmlspecialchars($employee['EmployeeID']); ?>">
+                            <?php echo htmlspecialchars($employee['FirstName'] . ' ' . $employee['LastName'] . 
+                                  ' (' . $employee['Username'] . ')'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="new_password">New Password:</label>
+                <input type="text" id="new_password" name="new_password" value="password" required>
+            </div>
+            <button type="submit" class="reset-button">Reset Password</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Add Remove Employee Modal -->
+<div id="removeEmployeeModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeRemoveEmployeeModal()">&times;</span>
+        <h3>Remove Employee</h3>
+        <form method="POST" action="remove_employee.php" id="removeEmployeeForm">
+            <div class="form-group">
+                <label for="remove_employee_select">Select Employee:</label>
+                <select id="remove_employee_select" name="employee_id" required>
+                    <option value="">Select an employee...</option>
+                    <?php foreach ($employees as $employee): ?>
+                        <option value="<?php echo htmlspecialchars($employee['EmployeeID']); ?>">
+                            <?php echo htmlspecialchars($employee['FirstName'] . ' ' . $employee['LastName'] . 
+                                  ' (' . $employee['Username'] . ')'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div id="removeEmployeeError" style="color: red; display: none;">Error: You cannot remove yourself.</div>
+            <button type="submit" class="reset-button">Remove Employee</button>
+        </form>
+    </div>
+</div>
+
 <script>
 function toggleContactInfo(role) {
     const isMover = role === 'Mover';
@@ -132,6 +189,40 @@ function toggleSection(id) {
     const section = document.getElementById(id).parentElement;
     section.classList.toggle('collapsed');
 }
+
+function showPasswordResetModal() {
+    document.getElementById('passwordResetModal').style.display = 'block';
+}
+
+function closePasswordResetModal() {
+    document.getElementById('passwordResetModal').style.display = 'none';
+}
+
+function showRemoveEmployeeModal() {
+    document.getElementById('removeEmployeeModal').style.display = 'block';
+}
+
+function closeRemoveEmployeeModal() {
+    document.getElementById('removeEmployeeModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    if (event.target == document.getElementById('passwordResetModal')) {
+        closePasswordResetModal();
+    }
+}
+
+// Handle form submission for removing employee
+document.getElementById('removeEmployeeForm').addEventListener('submit', function(event) {
+    const selectedEmployeeId = document.getElementById('remove_employee_select').value;
+    const currentUserId = '<?php echo $_SESSION['user_id']; ?>';
+
+    if (selectedEmployeeId === currentUserId) {
+        event.preventDefault();
+        document.getElementById('removeEmployeeError').style.display = 'block';
+    }
+});
 
 // Initialize sections as expanded
 document.addEventListener('DOMContentLoaded', function() {

@@ -60,11 +60,12 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td>
                         <form method="POST" action="update_booking_status.php" style="display:inline;">
                             <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars($booking['BookingID']); ?>">
-                            <?php if (!$booking['PickedUp']): ?>
-                                <button type="submit" name="action" value="picked_up">Mark as Picked Up</button>
-                            <?php elseif (!$booking['Delivered']): ?>
-                                <button type="submit" name="action" value="delivered">Mark as Delivered</button>
-                            <?php endif; ?>
+                            <button type="submit" name="action" value="picked_up" class="toggle-button picked-up <?php echo $booking['PickedUp'] ? 'undo' : ''; ?>">
+                                <?php echo $booking['PickedUp'] ? 'Undo Picked Up' : 'Mark as Picked Up'; ?>
+                            </button>
+                            <button type="submit" name="action" value="delivered" class="toggle-button delivered <?php echo $booking['Delivered'] ? 'undo' : ''; ?>">
+                                <?php echo $booking['Delivered'] ? 'Undo Delivered' : 'Mark as Delivered'; ?>
+                            </button>
                         </form>
                     </td>
                 </tr>

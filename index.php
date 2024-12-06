@@ -74,19 +74,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $pageTitle = 'Login';
 include 'templates/header.php'; // Include shared header
 ?>
-<div class="container">
-    <h1>Login</h1>
+<h1><em>Move Me Now</em> Moving Company</h1>
+<div class="login-container">
+    <h2>Login</h2>
     <?php if ($error): ?>
         <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
     <?php endif; ?>
     <form method="POST" action="index.php">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Enter your username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-        <br>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
         <button type="submit">Login</button>
     </form>
 </div>
-<?php include 'templates/footer.php'; // Include shared footer ?>
