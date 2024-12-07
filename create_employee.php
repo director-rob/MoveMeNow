@@ -44,11 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // If role is Mover, also insert into Movers table
         if ($role === 'Mover') {
             $fullName = $firstName . ' ' . $lastName;
-            $query = 'INSERT INTO Movers (MoverID, Name, ContactInfo) VALUES (:moverId, :name, :contactInfo)';
+            $query = 'INSERT INTO Movers (MoverID, Name, ContactInfo, OtherDetails) VALUES (:moverId, :name, :contactInfo, :otherDetails)';
             $stmt = $db->prepare($query);
             $stmt->bindParam(':moverId', $employeeId, PDO::PARAM_INT);
             $stmt->bindParam(':name', $fullName, PDO::PARAM_STR);
             $stmt->bindParam(':contactInfo', $contactInfo, PDO::PARAM_STR);
+            $stmt->bindParam(':otherDetails', $otherDetails, PDO::PARAM_STR);
             $stmt->execute();
         }
 
