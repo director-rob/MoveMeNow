@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2024 at 08:12 AM
+-- Generation Time: Dec 07, 2024 at 07:47 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,6 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ArchivedBookings`
+--
+
+CREATE TABLE `ArchivedBookings` (
+  `BookingID` int(11) NOT NULL,
+  `DateArchived` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `BookingMovers`
 --
 
@@ -37,11 +48,11 @@ CREATE TABLE `BookingMovers` (
 --
 
 INSERT INTO `BookingMovers` (`BookingID`, `MoverID`) VALUES
-(1, 1),
-(1, 4),
 (2, 1),
 (3, 4),
-(3, 5);
+(3, 5),
+(1, 1),
+(1, 4);
 
 -- --------------------------------------------------------
 
@@ -59,17 +70,18 @@ CREATE TABLE `Bookings` (
   `Delivered` tinyint(1) DEFAULT 0,
   `BookingCompleted` tinyint(1) DEFAULT 0,
   `TimePickedUp` datetime DEFAULT NULL,
-  `TimeDelivered` datetime DEFAULT NULL
+  `TimeDelivered` datetime DEFAULT NULL,
+  `MoveRequirements` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Bookings`
 --
 
-INSERT INTO `Bookings` (`BookingID`, `Date`, `PickupAddress`, `Truck`, `DeliveryAddress`, `PickedUp`, `Delivered`, `BookingCompleted`, `TimePickedUp`, `TimeDelivered`) VALUES
-(1, '2024-12-07', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 1, 1, 0, NULL, NULL),
-(2, '2024-12-07', 'address 1', 2, 'address 2', 1, 1, 0, NULL, NULL),
-(3, '2024-12-05', 'address 1', 5, 'addres2', 0, 0, NULL, NULL, NULL);
+INSERT INTO `Bookings` (`BookingID`, `Date`, `PickupAddress`, `Truck`, `DeliveryAddress`, `PickedUp`, `Delivered`, `BookingCompleted`, `TimePickedUp`, `TimeDelivered`, `MoveRequirements`) VALUES
+(1, '2024-12-06', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 1, 1, 0, NULL, NULL, ''),
+(2, '2024-12-07', 'address 1', 2, 'address 2', 1, 1, 0, NULL, NULL, ''),
+(3, '2024-12-05', 'address 1', 5, 'addres2', 0, 0, NULL, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -117,7 +129,11 @@ INSERT INTO `Employees` (`EmployeeID`, `FirstName`, `LastName`, `DateJoined`, `R
 (1, 'John', 'Doe', '2023-06-15', 'Mover', 'JohnDoe', '$2y$10$sokiU9ihGyIkpHaNUGjtSOexHZvvYcNsECCcyooKCvRPmD/cktbN6'),
 (2, 'Jane', 'Smith', '2021-02-20', 'Manager', 'JaneSmith', '$2y$10$hXjwyZeWLDHwVRfXryJdiu/SVntijTdxWJDPZmu/dii313P2FwcTi'),
 (4, 'James', 'Smith', '2024-12-04', 'Mover', 'jamessmith', '$2y$10$tGLiogktA7vqPb6zYnO3tOC1Vt.6wNSDjTlKY3Wy3L8MHIWp12CkW'),
-(5, 'Bill', 'Emerson', '2025-12-16', 'Mover', 'billemerson', '$2y$10$f7rNso1szUFjWJv479hb6.TBxnOsyDRlzs5YljS3xNEFm7IehABJe');
+(5, 'Bill', 'Emerson', '2025-12-16', 'Mover', 'billemerson', '$2y$10$f7rNso1szUFjWJv479hb6.TBxnOsyDRlzs5YljS3xNEFm7IehABJe'),
+(6, 'Robert', 'Cioata', '2023-11-07', 'Mover', 'robertcioata', '$2y$10$Ue.nozWyvIRMcwjBXKq12OIUlGLsnKZO9K2qVRhb8beIzGC1FgiKC'),
+(11, 'Robert', 'Smith', '2024-11-12', 'Mover', 'robertsmith', '$2y$10$YFi83hR5S/0LhDzBum/SmOWheiz7SavNvRhayqzvkHx8ZE0D8rAU2'),
+(12, 'yica', 'smith', '2024-12-03', 'Mover', 'yicasmith', '$2y$10$tXBWf4FrT3DpEsQDPFEzTek2W48nD6a2pke4TRVvsm2Bh.rLBHdG2'),
+(14, 'Bill', 'Nye', '2011-01-03', 'Mover', 'billnye', '$2y$10$v2mxFwwS//Cbk5/O9/dT6.0dkHK5.qarV9.mFoH.QXiUtR3h.VYIK');
 
 -- --------------------------------------------------------
 
@@ -139,7 +155,11 @@ CREATE TABLE `Movers` (
 INSERT INTO `Movers` (`MoverID`, `Name`, `ContactInfo`, `OtherDetails`) VALUES
 (1, 'John Doe', '778-555-5555', 'Experienced with Fragile Objects'),
 (4, 'James Smith', '778-882-8888', 'Experienced with Large Furniture'),
-(5, 'Bill Emerson', '778-874-3921', NULL);
+(5, 'Bill Emerson', '778-874-3921', NULL),
+(6, 'Robert Cioata', '778-874-3926', NULL),
+(11, 'Robert Smith', '778-999-9871', NULL),
+(12, 'yica smith', '778-872-8878', 'Very strong'),
+(14, 'Bill Nye', '221-765-8921', 'Good at problem solving');
 
 -- --------------------------------------------------------
 
@@ -174,6 +194,12 @@ INSERT INTO `Trucks` (`TruckID`, `LicensePlate`, `SizeInFeet`, `Make`, `Model`) 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ArchivedBookings`
+--
+ALTER TABLE `ArchivedBookings`
+  ADD KEY `fk_archivedbookings_bookingid` (`BookingID`);
 
 --
 -- Indexes for table `BookingMovers`
@@ -235,13 +261,13 @@ ALTER TABLE `Customers`
 -- AUTO_INCREMENT for table `Employees`
 --
 ALTER TABLE `Employees`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `Movers`
 --
 ALTER TABLE `Movers`
-  MODIFY `MoverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `MoverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `Trucks`
@@ -252,6 +278,12 @@ ALTER TABLE `Trucks`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `ArchivedBookings`
+--
+ALTER TABLE `ArchivedBookings`
+  ADD CONSTRAINT `fk_archivedbookings_bookingid` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `BookingMovers`
