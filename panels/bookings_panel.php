@@ -39,33 +39,35 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
     </thead>
     <tbody>
-        <?php if (!empty($bookings)): ?>
-            <?php foreach ($bookings as $booking): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($booking['BookingID']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['Date']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['PickupAddress']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['DeliveryAddress']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['Truck']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['BookingCompleted'] == '1' ? 'True' : 'False'); ?></td>
-                    <td><?php echo htmlspecialchars($booking['AssignedMovers'] ?? 'None'); ?></td>
-                    <td>
-                        <form method="POST" action="update_booking_status.php" style="display:inline;">
-                            <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars($booking['BookingID']); ?>">
-                            <input type="hidden" name="current_status" value="<?php echo htmlspecialchars($booking['BookingCompleted']); ?>">
-                            <button type="submit" class="status-toggle <?php echo $booking['BookingCompleted'] == '1' ? 'completed' : 'pending'; ?>">
-                                <?php echo $booking['BookingCompleted'] == '1' ? 'Completed' : 'Pending'; ?>
-                            </button>
-                        </form>
-                        <button onclick="showEditForm('<?php echo htmlspecialchars($booking['BookingID']); ?>')" class="edit-button">Edit</button>
-                    </td> 
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="8">No bookings found.</td>
-            </tr>
-        <?php endif; ?>
+    <?php if (!empty($bookings)): ?>
+    <?php foreach ($bookings as $booking): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($booking['BookingID']); ?></td>
+            <td><?php echo htmlspecialchars($booking['Date']); ?></td>
+            <td><?php echo htmlspecialchars($booking['PickupAddress']); ?></td>
+            <td><?php echo htmlspecialchars($booking['DeliveryAddress']); ?></td>
+            <td><?php echo htmlspecialchars($booking['Truck']); ?></td>
+            <td><?php echo htmlspecialchars($booking['BookingCompleted'] == '1' ? 'True' : 'False'); ?></td>
+            <td><?php echo htmlspecialchars($booking['AssignedMovers'] ?? 'None'); ?></td>
+            <td>
+                <div class="button-group">
+                    <form method="POST" action="update_booking_status.php" style="display:inline;">
+                        <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars($booking['BookingID']); ?>">
+                        <input type="hidden" name="current_status" value="<?php echo htmlspecialchars($booking['BookingCompleted']); ?>">
+                        <button type="submit" class="status-toggle <?php echo $booking['BookingCompleted'] == '1' ? 'completed' : 'pending'; ?>">
+                            <?php echo $booking['BookingCompleted'] == '1' ? 'Completed' : 'Pending'; ?>
+                        </button>
+                    </form>
+                    <button onclick="showEditForm('<?php echo htmlspecialchars($booking['BookingID']); ?>')" class="edit-button">Edit</button>
+                </div>
+            </td> 
+        </tr>
+    <?php endforeach; ?>
+<?php else: ?>
+    <tr>
+        <td colspan="8">No bookings found.</td>
+    </tr>
+<?php endif; ?>
     </tbody>
 </table>
 
@@ -122,7 +124,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             <div class="form-group">
                 <label for="edit_date">Date:</label>
-                <input type="date" id="edit_date" name="date" required onchange="fetchAvailableTrucks(this.value, 'edit_truck')">
+                <input type="date" id="edit_date" name="date" required onchange="fetchAvailableTrucks(this.value, 'edit_truck', document.getElementById('edit_truck').value)">
             </div>
             
             <div class="form-group">
@@ -190,7 +192,9 @@ function showEditForm(bookingId) {
             document.getElementById('edit_date').value = booking.Date;
             document.getElementById('edit_pickup').value = booking.PickupAddress;
             document.getElementById('edit_delivery').value = booking.DeliveryAddress;
-            document.getElementById('edit_truck').value = booking.Truck;
+            
+            // Fetch available trucks for the booking date and include the originally selected truck
+            fetchAvailableTrucks(booking.Date, 'edit_truck', booking.Truck);
             
             // Reset and set mover checkboxes
             const movers = booking.AssignedMovers?.split(',') || [];
@@ -213,18 +217,46 @@ window.onclick = function(event) {
     }
 }
 
-function fetchAvailableTrucks(date, elementId) {
+function fetchAvailableTrucks(date, elementId, selectedTruckId = null) {
     fetch(`get_available_trucks.php?date=${date}`)
         .then(response => response.json())
         .then(trucks => {
             const select = document.getElementById(elementId);
             select.innerHTML = '<option value="">Select a truck</option>';
+
+            // Fetch the originally selected truck details if provided
+            let originalTruckIncluded = false;
+            if (selectedTruckId) {
+                trucks.forEach(truck => {
+                    if (truck.TruckID == selectedTruckId) {
+                        originalTruckIncluded = true;
+                    }
+                });
+            }
+
+            // Add the originally selected truck if it's not in the available trucks list
+            if (selectedTruckId && !originalTruckIncluded) {
+                fetch(`get_truck_details.php?truck_id=${selectedTruckId}`)
+                    .then(response => response.json())
+                    .then(truck => {
+                        const originalOption = document.createElement('option');
+                        originalOption.value = truck.TruckID;
+                        originalOption.textContent = `${truck.TruckID} - ${truck.Make} ${truck.Model}, ${truck.SizeInFeet} ft, ${truck.LicensePlate} (current)`;
+                        select.appendChild(originalOption);
+                    });
+            }
+
             trucks.forEach(truck => {
                 const option = document.createElement('option');
                 option.value = truck.TruckID;
-                option.textContent = `${truck.TruckID} -  ${truck.Make} ${truck.Model}, ${truck.SizeInFeet} ft, ${truck.LicensePlate}`;
+                option.textContent = `${truck.TruckID} - ${truck.Make} ${truck.Model}, ${truck.SizeInFeet} ft, ${truck.LicensePlate}`;
                 select.appendChild(option);
             });
+
+            // Set the selected truck as the default selected option
+            if (selectedTruckId) {
+                select.value = selectedTruckId;
+            }
         });
 }
 
