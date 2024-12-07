@@ -26,7 +26,8 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <span class="toggle-icon">▼</span> View Employees
     </button>
     <div id="employees-table" class="collapsible-content">
-        <table border="1">
+        <input type="text" class =searchBox id="searchBoxEmployees" onkeyup="searchEmployees('employeesTable')" placeholder="Search for employees..">
+        <table border="1" id="employeesTable">
             <thead>
                 <tr>
                     <th>Employee ID</th>
@@ -74,15 +75,15 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <span class="toggle-icon">▼</span> Add New Employee
     </button>
     <div id="add-employee" class="collapsible-content">
-        <form method="POST" action="create_employee.php">
+        <form method="POST" action="create_employee.php" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required>
+                <input type="text" id="firstName" name="firstName" required onblur="capitalize(this)">
             </div>
             
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required>
+                <input type="text" id="lastName" name="lastName" required onblur="capitalize(this)">
             </div>
             
             <div class="form-group">
@@ -96,7 +97,7 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             <div class="form-group" id="contactInfoGroup" style="display: none;">
                 <label for="contactInfo">Contact Info:</label>
-                <input type="text" id="contactInfo" name="contactInfo" placeholder="Phone number or email">
+                <input type="text" id="contactInfo" name="contactInfo" placeholder="Phone number or email" onblur="formatPhoneNumber(this)">
             </div>
             
             <div class="form-group" id="otherDetailsGroup" style="display: none;">
@@ -148,7 +149,6 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-
 <!-- Add Remove Employee Modal -->
 <div id="removeEmployeeModal" class="modal" style="display: none;">
     <div class="modal-content">
@@ -176,13 +176,33 @@ $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <script>
 function toggleContactInfo(role) {
     const isMover = role === 'Mover';
-    const contactInfoGroup = document.getElementById('contactInfoGroup');
-    const otherDetailsGroup = document.getElementById('otherDetailsGroup');
-    
-    contactInfoGroup.style.display = isMover ? 'block' : 'none';
-    otherDetailsGroup.style.display = isMover ? 'block' : 'none';
-    
-    document.getElementById('contactInfo').required = isMover;
+    document.getElementById('contactInfoGroup').style.display = isMover ? 'block' : 'none';
+    document.getElementById('otherDetailsGroup').style.display = isMover ? 'block' : 'none';
+}
+
+function capitalize(input) {
+    input.value = input.value.replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+    });
+}
+
+function formatPhoneNumber(input) {
+    const phone = input.value.replace(/\D/g, '');
+    if (phone.length === 10) {
+        input.value = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    }
+}
+
+function validateForm() {
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const contactInfo = document.getElementById('contactInfo');
+
+    capitalize(firstName);
+    capitalize(lastName);
+    formatPhoneNumber(contactInfo);
+
+    return true;
 }
 
 function toggleSection(id) {
@@ -224,12 +244,36 @@ document.getElementById('removeEmployeeForm').addEventListener('submit', functio
     }
 });
 
-// Initialize sections as expanded
+// Initialize sections as collapsed
 document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('.collapsible-section');
     sections.forEach(section => {
         section.classList.add('collapsed');
     });
 });
+
+function searchEmployees(tableId) {
+    const input = document.getElementById('searchBoxEmployees');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById(tableId);
+    const tr = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < tr.length; i++) {
+        const tdArray = tr[i].getElementsByTagName('td');
+        let found = false;
+        for (let j = 0; j < tdArray.length; j++) {
+            if (tdArray[j]) {
+                if (tdArray[j].innerHTML.toLowerCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        tr[i].style.display = found ? '' : 'none';
+    }
+}
+
+
+
 </script>
 

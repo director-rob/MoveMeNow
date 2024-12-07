@@ -1,458 +1,413 @@
-
-
 /* Add at the top of styles.css */
 * {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-                 Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
-
 body {
     margin: 0;
     line-height: 1.4;
+    font-size: 16px; /* Adjust the font size as needed */
+}
+/* Add specific styles for text elements */
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1.5em; /* Adjust as needed */
 }
 
-/* Add specific styles for text elements */
-h1, h2, h3, h4, h5, h6, p, span, a, label, td, th {
-    font-family: Arial, Helvetica, sans-serif;
+p, span, a, label, td, th {
+    font-size: 0.875em; /* Adjust as needed */
 }
 h1 {
-    padding-bottom: 10px;
-    text-align: center;
-        margin: auto; /* Center horizontally */
-        position: relative; /* For proper stacking context */
+	padding-bottom: 10px;
+	text-align: center;
+	margin: auto;
+	/* Center horizontally */
+	position: relative;
+	/* For proper stacking context */
 }
-
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
 }
-
 .dashboard-panels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
 }
-
 .panel {
-    flex: 1 1 calc(33.333% - 20px);
-    background: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	flex: 1 1 calc(33.333% - 20px);
+	background: #f9f9f9;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 button[type="submit"] {
-    padding: 10px 15px;
-    background-color: #f44336; /* Red color for logout */
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
+	padding: 10px 15px;
+	background-color: #f44336;
+	/* Red color for logout */
+	color: white;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	font-weight: bold;
 }
-
 button[type="submit"]:hover {
-    background-color: #d32f2f; /* Darker red when hovered */
+	background-color: #d32f2f;
+	/* Darker red when hovered */
 }
 .status-toggle {
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
+	padding: 5px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	border: none;
+	font-weight: bold;
 }
-
 .status-toggle.completed {
-    background-color: #4CAF50;
-    color: white;
+	background-color: #4CAF50;
+	color: white;
 }
-
 .status-toggle.pending {
-    background-color: #f44336;
-    color: white;
+	background-color: #f44336;
+	color: white;
 }
-
 .status-toggle:hover {
-    opacity: 0.9;
+	opacity: 0.9;
 }
-
-
 .form-group {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
-
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
+	display: block;
+	margin-bottom: 5px;
 }
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.form-group input,.form-group select {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
 }
-
 button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
 }
-
 button[type="submit"]:hover {
-    background-color: #45a049;
+	background-color: #45a049;
 }
-
 textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical;
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	resize: vertical;
 }
-
 .collapsible-section {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
-
 .collapse-toggle {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: left;
-    font-weight: bold;
+	width: 100%;
+	padding: 10px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	text-align: left;
+	font-weight: bold;
 }
-
 .collapse-toggle:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
-
 .toggle-icon {
-    display: inline-block;
-    transition: transform 0.3s;
+	display: inline-block;
+	transition: transform 0.3s;
 }
-
 .collapsed .toggle-icon {
-    transform: rotate(-90deg);
+	transform: rotate(-90deg);
 }
-
 .collapsible-content {
-    max-height: 2000px;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
+	max-height: 2000px;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
 }
-
 .collapsed .collapsible-content {
-    max-height: 0;
+	max-height: 0;
 }
-
 .form-group input[type="password"] {
-        /*width: 250px; /* or any other reasonable width */
-        max-width: 100%;
-    }
-
+	/*width: 250px;
+	/* or any other reasonable width */
+	max-width: 100%;
+}
 .navbar {
-    background-color: #e3f2fd; /* Light blue */
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	background-color: #e3f2fd;
+	/* Light blue */
+	padding: 10px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 .nav-right {
-    display: flex;
-    gap: 10px;
+	display: flex;
+	gap: 10px;
 }
-
 .nav-button {
-    background-color: #007bff; /* Darker blue */
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background-color 0.3s;
+	background-color: #007bff;
+	/* Darker blue */
+	color: white;
+	padding: 8px 16px;
+	border-radius: 4px;
+	text-decoration: none;
+	transition: background-color 0.3s;
 }
-
 .nav-button:hover {
-    background-color: #004b9b;; /* Slightly lighter blue on hover */
-    text-decoration: none;
+	background-color: #004b9b;
+	;
+	/* Slightly lighter blue on hover */
+	text-decoration: none;
 }
-
+.searchBox {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-                 Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    margin: 0;
-    line-height: 1.4;
-    background-color: #f1f9ff; /* Light blue background */
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	margin: 0;
+	line-height: 1.4;
+	background-color: #f1f9ff;
+	/* Light blue background */
 }
-
 .movers-selection {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+	margin: 10px 0;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
 }
-
 .mover-option {
-    margin: 5px 0;
+	margin: 5px 0;
 }
-
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1000;
-    overflow-y: auto; /* Allow scrolling */
-    display: flex;
-    align-items: flex-start; /* Align to top instead of center */
-    justify-content: center;
-    padding: 20px; /* Add padding for smaller screens */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 1000;
+	overflow-y: auto;
+	/* Allow scrolling */
+	display: flex;
+	align-items: flex-start;
+	/* Align to top instead of center */
+	justify-content: center;
+	padding: 20px;
+	/* Add padding for smaller screens */
 }
-
 .modal-content {
-    position: relative;
-    background-color: #fff;
-    margin: 40px auto; /* Reduce top margin */
-    padding: 20px;
-    width: 70%;
-    max-width: 500px;
-    border-radius: 5px;
-    max-height: 90vh; /* Maximum height */
-    overflow-y: auto; /* Make content scrollable */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	position: relative;
+	background-color: #fff;
+	margin: 40px auto;
+	/* Reduce top margin */
+	padding: 20px;
+	width: 70%;
+	max-width: 500px;
+	border-radius: 5px;
+	max-height: 90vh;
+	/* Maximum height */
+	overflow-y: auto;
+	/* Make content scrollable */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .close {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    font-size: 24px;
-    cursor: pointer;
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	font-size: 24px;
+	cursor: pointer;
 }
-
 .edit-button {
-    background-color: #ffc107;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 5px;
+	background-color: #ffc107;
+	color: black;
+	border: none;
+	padding: 5px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-left: 5px;
 }
-
 .edit-button:hover {
-    background-color: #ffb300;
+	background-color: #ffb300;
 }
-
 .button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+	display: flex;
+	gap: 10px;
+	margin-top: 20px;
 }
-
 .update-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1;
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	flex: 1;
 }
-
 .delete-button {
-    background-color: #dc3545;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1;
+	background-color: #dc3545;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	flex: 1;
 }
-
 .update-button:hover {
-    background-color: #45a049;
+	background-color: #45a049;
 }
-
 .delete-button:hover {
-    background-color: #c82333;
+	background-color: #c82333;
 }
-
-
 .action-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: auto;
-    min-width: 200px;
+	background-color: #007bff;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: auto;
+	min-width: 200px;
 }
-
 .action-button:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
-
 .reset-button {
-    background-color: #ffc107;
-    color: black;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
+	background-color: #ffc107;
+	color: black;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 100%;
 }
-
 .reset-button:hover {
-    background-color: #e0a800;}
-
-    /* Add/update styles in assets/styles.css */
-
-
-    
-    /* Update login container styles */
-    .login-container {
-        background: #f9f9f9;
-        padding: 30px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
-        margin: auto; /* Center horizontally */
-        position: relative; /* For proper stacking context */
-    }
-
+	background-color: #e0a800;
+}
+/* Add/update styles in assets/styles.css */
+/* Update login container styles */
+.login-container {
+	background: #f9f9f9;
+	padding: 30px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 400px;
+	text-align: center;
+	margin: auto;
+	/* Center horizontally */
+	position: relative;
+	/* For proper stacking context */
+}
 .login-container h1 {
-    margin-bottom: 20px;
-    color: #333;
+	margin-bottom: 20px;
+	color: #333;
 }
-
 .login-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
 }
-
 .login-container input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
 }
-
 .login-container button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
+	background-color: #007bff;
+	color: white;
+	padding: 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	margin-top: 10px;
 }
-
 .login-container button:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
-
 .remove-button {
-    background-color: #dc3545; /* Red color */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: auto;
-    min-width: 200px;
+	background-color: #dc3545;
+	/* Red color */
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: auto;
+	min-width: 200px;
 }
-
 .remove-button:hover {
-    background-color: #c82333;
+	background-color: #c82333;
 }
-
 .toggle-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
+	padding: 5px 10px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: white;
 }
-
 .toggle-button.picked-up {
-    background-color: green;
+	background-color: green;
 }
-
 .toggle-button.picked-up.undo {
-    background-color: red;
+	background-color: red;
 }
-
 .toggle-button.delivered {
-    background-color: green;
+	background-color: green;
 }
-
 .toggle-button.delivered.undo {
-    background-color: red;
+	background-color: red;
 }
-
 /* Table Styles */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    text-align: left;
+	padding: 12px 15px;
+	border: 1px solid #ddd;
+	text-align: left;
 }
-
 table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
+	background-color: #f4f4f4;
+	font-weight: bold;
 }
-
 table tr:nth-child(even) {
-    background-color: #f9f9f9;
+	background-color: #f9f9f9;
 }
-
 table tr:hover {
-    background-color: #f1f1f1;
+	background-color: #f1f1f1;
 }
-
 table thead {
-    background-color: #007bff;
-    color: black;
+	background-color: #007bff;
+	color: black;
 }
-
 table thead th {
-    border: none;
+	border: none;
 }
-
 table tbody tr {
-    transition: background-color 0.3s;
+	transition: background-color 0.3s;
 }
-
 table tbody tr:hover {
-    background-color: #f1f1f1;
+	background-color: #f1f1f1;
 }

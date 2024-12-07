@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// DEBUG: Output current session state at the start of dashboard.php
-echo 'Current Session State at dashboard.php:<br>';
-echo 'Session ID: ' . session_id() . '<br>';
-echo 'User ID: ' . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'Not Set') . '<br>';
-echo 'Role: ' . (isset($_SESSION['role']) ? $_SESSION['role'] : 'Not Set') . '<br>';
 
 // Redirect if not logged in
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {

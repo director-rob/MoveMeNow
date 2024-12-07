@@ -27,7 +27,8 @@ foreach ($bookingsToday as $booking) {
 ?>
 
 <h2>Trucks</h2>
-<table border="1">
+<input type="text" class="searchBox" id="searchBoxTrucks" onkeyup="searchTrucks()" placeholder="Search for trucks..">
+<table border="1" id="trucksTable">
     <thead>
         <tr>
             <th>Truck ID</th>
@@ -71,6 +72,27 @@ foreach ($bookingsToday as $booking) {
 </div>
 
 <script>
+function searchTrucks() {
+    const input = document.getElementById('searchBoxTrucks');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById('trucksTable');
+    const tr = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < tr.length; i++) {
+        const tdArray = tr[i].getElementsByTagName('td');
+        let found = false;
+        for (let j = 0; j < tdArray.length; j++) {
+            if (tdArray[j]) {
+                if (tdArray[j].innerHTML.toLowerCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        tr[i].style.display = found ? '' : 'none';
+    }
+}
+
 function showUpcomingBookings(truckId) {
     fetch(`get_upcoming_bookings.php?truck_id=${truckId}`)
         .then(response => response.json())

@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $role = $_POST['role'];
     $dateJoined = $_POST['dateJoined'];
     $contactInfo = $_POST['contactInfo'] ?? null;
+    $otherDetails = $_POST['otherDetails'] ?? null;
     
     // Generate username by concatenating first and last name
     $username = strtolower($firstName . $lastName);
