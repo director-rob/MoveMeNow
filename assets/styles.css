@@ -41,20 +41,7 @@ h1 {
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-button[type="submit"] {
-	padding: 10px 15px;
-	background-color: #f44336;
-	/* Red color for logout */
-	color: white;
-	border: none;
-	cursor: pointer;
-	border-radius: 3px;
-	font-weight: bold;
-}
-button[type="submit"]:hover {
-	background-color: #d32f2f;
-	/* Darker red when hovered */
-}
+
 .status-toggle {
 	padding: 5px 5px;
 	border-radius: 2px;
@@ -86,16 +73,12 @@ button[type="submit"]:hover {
 	border: 1px solid #ddd;
 	border-radius: 4px;
 }
-button[type="submit"] {
-	background-color: #4CAF50;
-	color: white;
+button{
+	
 	padding: 10px 15px;
 	border: none;
 	border-radius: 3px;
 	cursor: pointer;
-}
-button[type="submit"]:hover {
-	background-color: #45a049;
 }
 
 .button-group {
@@ -234,21 +217,18 @@ body {
 	margin: 5px 0;
 }
 .modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.5);
-	z-index: 1000;
-	overflow-y: auto;
-	/* Allow scrolling */
-	display: flex;
-	align-items: flex-start;
-	/* Align to top instead of center */
-	justify-content: center;
-	padding: 20px;
-	/* Add padding for smaller screens */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto;
+    display: none; /* Hide modals initially */
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
 }
 .modal-content {
 	position: relative;
@@ -289,7 +269,7 @@ body {
 	gap: 10px;
 	margin-top: 20px;
 }
-.update-button {
+.good-button {
 	background-color: #4CAF50;
 	color: white;
 	padding: 10px 15px;
@@ -307,7 +287,7 @@ body {
 	cursor: pointer;
 	flex: 1;
 }
-.update-button:hover {
+.good-button:hover {
 	background-color: #45a049;
 }
 .delete-button:hover {
@@ -453,4 +433,129 @@ table tbody tr:hover {
 	background-color: #f1f1f1;
 }
 
+table tbody tr {
+    transition: background-color 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+table tbody tr::after {
+    content: "View details";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: #888;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+table tbody tr:hover::after {
+    opacity: 1;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #ddd;
+}
+
+.tab-button.active {
+    background-color: #ccc;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.panel {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.panel:last-child {
+    margin-right: 0;
+}
+
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    border-top: 2px solid #ddd;
+    padding-top: 10px;
+}
+
+.status-toggle {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.archive-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 

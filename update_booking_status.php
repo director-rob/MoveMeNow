@@ -3,35 +3,42 @@ require_once 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $booking_id = $_POST['booking_id'] ?? null;
-    $current_time = date('Y-m-d H:i:s');
+    $redirect_url = $_POST['redirect_url'] ?? 'bookings.php';
     
-    if (isset($_POST['current_status'])) {
-        // Handle completion status toggle
-        $current_status = $_POST['current_status'];
-        $new_status = $current_status == '1' ? '0' : '1';
-        
-        $query = 'UPDATE Bookings SET BookingCompleted = :status WHERE BookingID = :booking_id';
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':status', $new_status, PDO::PARAM_STR);
-        $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
-    } 
-    elseif (isset($_POST['action'])) {
-        // Handle pickup/delivery status toggle
-        $action = $_POST['action'];
-        
-        if ($action === 'picked_up') {
-            $query = 'UPDATE Bookings SET PickedUp = IF(PickedUp = 1, 0, 1), TimePickedUp = IF(PickedUp = 1, NULL, :current_time) WHERE BookingID = :booking_id';
-        } elseif ($action === 'delivered') {
-            $query = 'UPDATE Bookings SET Delivered = IF(Delivered = 1, 0, 1), TimeDelivered = IF(Delivered = 1, NULL, :current_time) WHERE BookingID = :booking_id';
-        }
-        
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':current_time', $current_time, PDO::PARAM_STR);
-        $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+    // Validate the redirect URL
+    $allowed_urls = ['bookings.php', 'dashboard.php', 'booking_details.php']; // Add allowed URLs here
+    $parsed_url = parse_url($redirect_url);
+    $redirect_path = $parsed_url['path'] ?? '';
+
+    if (!in_array($redirect_path, $allowed_urls)) {
+        $redirect_url = 'bookings.php'; // Default to a safe URL
     }
 
-    $stmt->execute();
-    header('Location: dashboard.php');
+    if (isset($_POST['action'])) {
+        $action = $_POST['action'];
+        
+        if ($action === 'complete') {
+            // Mark booking as completed and override all other statuses
+            $query = 'UPDATE Bookings SET BookingCompleted = 1, PickedUp = 0, Delivered = 0, Paid = 0 WHERE BookingID = :booking_id';
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+            $stmt->execute();
+        } elseif ($action === 'in_progress' || $action === 'pending') {
+            // Mark booking as in progress
+            $query = 'UPDATE Bookings SET BookingCompleted = 0 WHERE BookingID = :booking_id';
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+            $stmt->execute();
+        } elseif ($action === 'incomplete') {
+            // Mark booking as incomplete
+            $query = 'UPDATE Bookings SET BookingCompleted = 0 WHERE BookingID = :booking_id';
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    }
+    
+    header("Location: $redirect_url");
     exit;
 }
 ?>

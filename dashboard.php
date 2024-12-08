@@ -27,16 +27,18 @@ include 'templates/nav.php';
     <p>Welcome, <?php echo htmlspecialchars($firstName); ?>!</p>
 
     <div class="dashboard-panels">
-        <?php if ($_SESSION['role'] === 'Manager'): ?>
+        <?php if ($_SESSION['role'] === 'Manager' || $_SESSION['role'] === 'Dispatcher'): ?>
             <!-- Bookings Panel -->
             <div class="panel" id="bookings-panel">
                 <?php include 'panels/bookings_panel.php'; ?>
             </div>
 
-            <!-- Employees Panel -->
-            <div class="panel" id="employees-panel">
-                <?php include 'panels/employees_panel.php'; ?>
-            </div>
+            <?php if ($_SESSION['role'] === 'Manager'): ?>
+                <!-- Employees Panel -->
+                <div class="panel" id="employees-panel">
+                    <?php include 'panels/employees_panel.php'; ?>
+                </div>
+            <?php endif; ?>
 
             <!-- Movers Panel -->
             <div class="panel" id="movers-panel">

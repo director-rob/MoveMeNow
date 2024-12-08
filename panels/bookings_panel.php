@@ -15,6 +15,8 @@ $query = '
     FROM Bookings B
     LEFT JOIN BookingMovers BM ON B.BookingID = BM.BookingID
     LEFT JOIN Movers M ON BM.MoverID = M.MoverID
+    LEFT JOIN ArchivedBookings A ON B.BookingID = A.BookingID
+    WHERE A.BookingID IS NULL
     GROUP BY B.BookingID
     ORDER BY B.Date DESC
 ';
@@ -24,54 +26,54 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- Display Bookings Table -->
-<h2>Bookings</h2>
+<h2>Upcoming Bookings</h2>
 <table border="1">
     <thead>
-        <tr>
-            <th>Booking ID</th>
-            <th>Date</th>
-            <th>Pickup Address</th>
-            <th>Delivery Address</th>
-            <th>Truck ID</th>
-            <th>Completed</th>
-            <th>Assigned Movers</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php if (!empty($bookings)): ?>
-    <?php foreach ($bookings as $booking): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($booking['BookingID']); ?></td>
-            <td><?php echo htmlspecialchars($booking['Date']); ?></td>
-            <td><?php echo htmlspecialchars($booking['PickupAddress']); ?></td>
-            <td><?php echo htmlspecialchars($booking['DeliveryAddress']); ?></td>
-            <td><?php echo htmlspecialchars($booking['Truck']); ?></td>
-            <td><?php echo htmlspecialchars($booking['BookingCompleted'] == '1' ? 'True' : 'False'); ?></td>
-            <td><?php echo htmlspecialchars($booking['AssignedMovers'] ?? 'None'); ?></td>
-            <td>
-                <div class="button-group">
-                    <form method="POST" action="update_booking_status.php" style="display:inline;">
-                        <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars($booking['BookingID']); ?>">
-                        <input type="hidden" name="current_status" value="<?php echo htmlspecialchars($booking['BookingCompleted']); ?>">
-                        <button type="submit" class="status-toggle <?php echo $booking['BookingCompleted'] == '1' ? 'completed' : 'pending'; ?>">
-                            <?php echo $booking['BookingCompleted'] == '1' ? 'Completed' : 'Pending'; ?>
-                        </button>
-                    </form>
-                    <button onclick="showEditForm('<?php echo htmlspecialchars($booking['BookingID']); ?>')" class="edit-button">Edit</button>
-                </div>
-            </td> 
-        </tr>
-    <?php endforeach; ?>
+    <tr>
+    <th>Booking ID</th>
+    <th>Date</th>
+    <th>Pickup Address</th>
+    <th>Delivery Address</th>
+    <th>Truck ID</th>
+    <th>Completed</th>
+    <th>Assigned Movers</th>
+    <th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<?php if (!empty($bookings)): ?>
+<?php foreach ($bookings as $booking): ?>
+    <tr>
+        <td><?php echo htmlspecialchars($booking['BookingID']); ?></td>
+        <td><?php echo htmlspecialchars($booking['Date']); ?></td>
+        <td><?php echo htmlspecialchars($booking['PickupAddress']); ?></td>
+        <td><?php echo htmlspecialchars($booking['DeliveryAddress']); ?></td>
+        <td><?php echo htmlspecialchars($booking['Truck']); ?></td>
+        <td><?php echo htmlspecialchars($booking['BookingCompleted'] == '1' ? 'True' : 'False'); ?></td>
+        <td><?php echo htmlspecialchars($booking['AssignedMovers'] ?? 'None'); ?></td>
+        <td>
+            <div class="button-group">
+                <form method="POST" action="update_booking_status.php" style="display:inline;">
+                    <input type="hidden" name="booking_id" value="<?php echo htmlspecialchars($booking['BookingID']); ?>">
+                    <input type="hidden" name="redirect_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                    <button type="submit" name="action" value="<?php echo $booking['BookingCompleted'] == '1' ? 'in_progress' : 'complete'; ?>" class="status-toggle <?php echo $booking['BookingCompleted'] == '1' ? 'completed' : 'pending'; ?>">
+                        <?php echo $booking['BookingCompleted'] == '1' ? 'Completed' : 'Pending'; ?>
+                    </button>
+                </form>
+                <button onclick="showEditForm('<?php echo htmlspecialchars($booking['BookingID']); ?>')" class="edit-button">Edit</button>
+            </div>
+        </td> 
+    </tr>
+<?php endforeach; ?>
 <?php else: ?>
     <tr>
         <td colspan="8">No bookings found.</td>
     </tr>
 <?php endif; ?>
-    </tbody>
+</tbody>
 </table>
 
-<!-- Add Booking Form -->
+<!-- Add Booking Form 
 <div class="collapsible-section">
     <button type="button" class="collapse-toggle" onclick="toggleSection('add-booking')">
         <span class="toggle-icon">▼</span> Add New Booking
@@ -97,22 +99,22 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <br>
             <label>Assign Movers:</label>
             <div class="movers-selection">
-                <?php foreach ($movers as $mover): ?>
+                <?php //foreach ($movers as $mover): ?>
                     <div class="mover-option">
                         <input type="checkbox" 
                                name="assigned_movers[]" 
-                               value="<?php echo htmlspecialchars($mover['MoverID']); ?>"
-                               id="mover_<?php echo htmlspecialchars($mover['MoverID']); ?>">
-                        <label for="mover_<?php echo htmlspecialchars($mover['MoverID']); ?>">
-                            <?php echo htmlspecialchars($mover['Name']); ?>
+                               value="<?php// echo htmlspecialchars($mover['MoverID']); ?>"
+                               id="mover_<?php //echo htmlspecialchars($mover['MoverID']); ?>">
+                        <label for="mover_<?php //echo htmlspecialchars($mover['MoverID']); ?>">
+                            <?php //echo htmlspecialchars($mover['Name']); ?>
                         </label>
                     </div>
-                <?php endforeach; ?>
+                <?php //endforeach; ?>
             </div>
             <button type="submit">Add Booking</button>
         </form>
     </div>
-</div>
+</div>-->
 
 <!-- Edit form modal/popup -->
 <div id="editBookingModal" class="modal" style="display: none;">
@@ -142,6 +144,11 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <select id="edit_truck" name="truck" required>
                     <option value="">Select a truck</option>
                 </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="edit_phone">Phone Number:</label>
+                <input type="text" id="edit_phone" name="phone" required>
             </div>
             
             <div class="form-group">
@@ -184,26 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showEditForm(bookingId) {
-    // Fetch booking details via AJAX
-    fetch(`get_booking.php?id=${bookingId}`)
-        .then(response => response.json())
-        .then(booking => {
-            document.getElementById('edit_booking_id').value = booking.BookingID;
-            document.getElementById('edit_date').value = booking.Date;
-            document.getElementById('edit_pickup').value = booking.PickupAddress;
-            document.getElementById('edit_delivery').value = booking.DeliveryAddress;
-            
-            // Fetch available trucks for the booking date and include the originally selected truck
-            fetchAvailableTrucks(booking.Date, 'edit_truck', booking.Truck);
-            
-            // Reset and set mover checkboxes
-            const movers = booking.AssignedMovers?.split(',') || [];
-            document.querySelectorAll('[name="assigned_movers[]"]').forEach(checkbox => {
-                checkbox.checked = movers.includes(checkbox.value);
-            });
-            
-            document.getElementById('editBookingModal').style.display = 'block';
-        });
+    window.location.href = `booking_details.php?id=${bookingId}`;
 }
 
 function closeEditForm() {
