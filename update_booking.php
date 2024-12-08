@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':password', $defaultPassword, PDO::PARAM_STR);
             $stmt->bindParam(':phone', $_POST['phone'], PDO::PARAM_STR);
             $stmt->execute();
-        } elseif ($customer) {
+        } elseif ($customer && $customerFieldsProvided) {
             // Update existing customer details
             $query = 'UPDATE Customers 
                       SET FirstName = :first_name, LastName = :last_name, Email = :email, PhoneNumber = :phone 

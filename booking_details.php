@@ -225,7 +225,7 @@ if (isset($_GET['id'])) {
         </div>
 
     <!-- Modals -->
-    <div id="customerInfoModal" class="modal">
+<div id="customerInfoModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('customerInfoModal')">&times;</span>
         <h3>Edit Customer Info</h3>

@@ -7,8 +7,6 @@ error_reporting(E_ALL);
 session_start(); // Start session at the very beginning
 require_once 'db.php'; // Database connection
 
-
-
 // Redirect if already logged in
 if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
     // DEBUG: Show message if user is already logged in
@@ -20,22 +18,33 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
+    $usernameOrEmail = $_POST['username_or_email'] ?? '';
     $password = $_POST['password'] ?? '';
+    $userType = $_POST['user_type'] ?? '';
 
     try {
-        // Query Employees table for matching credentials
-        $query = 'SELECT EmployeeID, Password, Role FROM Employees WHERE Username = :username';
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        if ($userType === 'Employee') {
+            // Query Employees table for matching credentials
+            $query = 'SELECT EmployeeID AS UserID, Password, Role FROM Employees WHERE Username = :username';
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':username', $usernameOrEmail, PDO::PARAM_STR);
+        } elseif ($userType === 'Customer') {
+            // Query Customers table for matching credentials
+            $query = 'SELECT CustomerID AS UserID, Password, "Customer" AS Role FROM Customers WHERE Email = :email';
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':email', $usernameOrEmail, PDO::PARAM_STR);
+        } else {
+            throw new Exception('Invalid user type selected.');
+        }
+
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // DEBUG: Check if user is fetched
         if ($user) {
-            echo 'User found in database: UserID = ' . $user['EmployeeID'] . ', Role = ' . $user['Role'] . '<br>';
+            echo 'User found in database: UserID = ' . $user['UserID'] . ', Role = ' . $user['Role'] . '<br>';
         } else {
-            echo 'No user found with the provided username.<br>';
+            echo 'No user found with the provided username/email.<br>';
         }
 
         // Verify password and handle role-based redirection
@@ -44,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_regenerate_id(true);
 
             // Set session variables
-            $_SESSION['user_id'] = $user['EmployeeID'];
+            $_SESSION['user_id'] = $user['UserID'];
             $_SESSION['role'] = $user['Role'];
 
             // DEBUG: Output session values after login success
@@ -59,10 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: dashboard.php');
             exit;
         } else {
-            $error = 'Invalid username or password.';
+            $error = 'Invalid username/email or password.';
         }
     } catch (PDOException $e) {
         $error = 'Database error: ' . $e->getMessage();
+    } catch (Exception $e) {
+        $error = $e->getMessage();
     }
 }
 
@@ -78,13 +89,22 @@ include 'templates/header.php'; // Include shared header
     <?php endif; ?>
     <form method="POST" action="index.php">
         <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <label for="username_or_email">Username or Email:</label>
+            <input type="text" id="username_or_email" name="username_or_email" placeholder="Enter your username or email" required>
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
         </div>
+        <div class="form-group">
+            <label for="user_type">User Type:</label>
+            <select id="user_type" name="user_type" required>
+                <option value="">Select user type</option>
+                <option value="Employee">Employee</option>
+                <option value="Customer">Customer</option>
+            </select>
+        </div>
         <button type="submit">Login</button>
     </form>
 </div>
+<?php include 'templates/footer.php'; ?>
