@@ -2,12 +2,13 @@
 require_once 'db.php';
 session_start();
 
-if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'Manager' && $_SESSION['role'] !== 'Dispatcher')) {
+// Ensure the user is logged in
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['Customer', 'Manager', 'Dispatcher'])) {
     header('Location: index.php');
     exit;
 }
 
-$customer_id = $_GET['id'] ?? null;
+$customer_id = $_SESSION['role'] === 'Customer' ? $_SESSION['user_id'] : ($_GET['id'] ?? null);
 
 if (!$customer_id) {
     header('Location: customers.php');
@@ -42,10 +43,12 @@ $updateStmt->execute();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
     $message = trim($_POST['message']);
     if ($message) {
-        $insertQuery = 'INSERT INTO Messages (CustomerID, Message) VALUES (:customer_id, :message)';
+        $sender = $_SESSION['role'] === 'Customer' ? 'Customer' : 'Employee';
+        $insertQuery = 'INSERT INTO Messages (CustomerID, Message, Sender) VALUES (:customer_id, :message, :sender)';
         $insertStmt = $db->prepare($insertQuery);
         $insertStmt->bindParam(':customer_id', $customer_id, PDO::PARAM_INT);
         $insertStmt->bindParam(':message', $message, PDO::PARAM_STR);
+        $insertStmt->bindParam(':sender', $sender, PDO::PARAM_STR);
         $insertStmt->execute();
         header('Location: customer_messages.php?id=' . $customer_id);
         exit;
@@ -61,7 +64,7 @@ include 'templates/nav.php';
     <h2>Messages with <?php echo htmlspecialchars($customer['FirstName'] . ' ' . $customer['LastName']); ?></h2>
     <div class="messages">
         <?php foreach ($messages as $msg): ?>
-            <div class="message <?php echo $msg['UserID'] == $_SESSION['user_id'] ? 'sent' : 'received'; ?>">
+            <div class="message <?php echo $msg['Sender'] === 'Customer' ? 'sent' : 'received'; ?>">
                 <p><?php echo htmlspecialchars($msg['Message']); ?></p>
                 <span class="timestamp"><?php echo htmlspecialchars($msg['SentAt']); ?></span>
             </div>

@@ -444,7 +444,7 @@ table tbody tr:hover {
 }
 
 table tbody tr::after {
-    content: "View details";
+    
     position: absolute;
     top: 50%;
     right: 10px;
@@ -559,3 +559,79 @@ table tbody tr:hover::after {
     cursor: pointer;
 }
 
+.new-message {
+    color: red;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.message-button {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.message-button:hover {
+    background-color: #0056b3;
+}
+
+.messages {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.message.sent {
+    background-color: #e1ffc7;
+    text-align: right;
+}
+
+.message.received {
+    background-color: #f1f1f1;
+    text-align: left;
+}
+
+.timestamp {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+}
+
+.send-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+.address-section {
+	display: flex;
+	justify-content: space-between;
+}
+.address-group {
+	width: 48%;
+}
+#credit-card-section {
+	display: none;
+}
