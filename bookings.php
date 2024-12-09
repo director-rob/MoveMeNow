@@ -118,7 +118,7 @@ $archivedBookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tr>
                         <th>Booking ID</th>
                         <th>Customer Name</th>
-                        <th>Move Weight</th>
+                        <th>Move Weight (Kg)</th>
                         <th>Move Size</th>
                         <th>Move Date</th>
                         <th>Status</th>

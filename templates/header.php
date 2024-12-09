@@ -11,11 +11,7 @@
 //Set current time zone
 date_default_timezone_set('America/Vancouver');
 // DEBUG: Output current session state
-echo 'Current Session State at index.php (before login logic):<br>';
-echo 'Session ID: ' . session_id() . '<br>';
-echo 'User ID: ' . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'Not Set') . '<br>';
-echo 'Role: ' . (isset($_SESSION['role']) ? $_SESSION['role'] : 'Not Set') . '<br>';
-echo 'Date: ' . date("Y-m-d") . '<br>';
-echo 'Time Zone: ' . date_default_timezone_get() . '<br>';
+
 
 ?>
+<br><br><br>
