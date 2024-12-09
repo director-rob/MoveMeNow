@@ -8,6 +8,7 @@ session_start();
         <?php if (isset($_SESSION['role']) && ($_SESSION['role'] === 'Dispatcher' || $_SESSION['role'] === 'Manager')): ?>
             <a href="bookings.php" class="nav-button">Manage Bookings</a>
             <a href="customers.php" class="nav-button">Manage Customers</a>
+            <a href="inquiries.php" class="nav-button">View Inquiries</a>
         <?php endif; ?>
     </div>
     <div class="nav-right">

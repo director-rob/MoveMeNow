@@ -701,3 +701,11 @@ text-align: center;
 .message-button.flash {
     animation: flash 1s infinite;
 }
+
+.message-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}

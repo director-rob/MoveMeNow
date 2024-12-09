@@ -91,7 +91,7 @@ $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($customers as $customer): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($customer['CustomerID']); ?></td>
-                            <td><?php echo htmlspecialchars($customer['BookingID']); ?></td>
+                            <td><?php echo htmlspecialchars($customer['BookingID'] ?? 'N/A'); ?></td>
                             <td><?php echo htmlspecialchars($customer['FirstName']); ?></td>
                             <td><?php echo htmlspecialchars($customer['LastName']); ?></td>
                             <td><?php echo htmlspecialchars($customer['Email']); ?></td>
@@ -103,6 +103,7 @@ $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </td>
                             <td>
                                 <button onclick="window.location.href='customer_messages.php?id=<?php echo htmlspecialchars($customer['CustomerID']); ?>'" class="edit-button">View Messages</button>
+                                <button onclick="openEditModal(<?php echo htmlspecialchars($customer['CustomerID']); ?>, '<?php echo htmlspecialchars($customer['FirstName']); ?>', '<?php echo htmlspecialchars($customer['LastName']); ?>', '<?php echo htmlspecialchars($customer['Email']); ?>', '<?php echo htmlspecialchars($customer['PhoneNumber']); ?>')" class="edit-button">Edit</button>
                                 <form method="POST" action="delete_customer.php" style="display:inline;">
                                     <input type="hidden" name="customer_id" value="<?php echo htmlspecialchars($customer['CustomerID']); ?>">
                                     <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this customer? This action cannot be undone.');">Delete</button>
@@ -116,9 +117,63 @@ $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
+<!-- Edit Customer Modal -->
+<div id="editCustomerModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h3>Edit Customer</h3>
+        <form method="POST" action="update_customer.php">
+            <input type="hidden" id="edit_customer_id" name="customer_id">
+            <div class="form-group">
+                <label for="edit_first_name">First Name:</label>
+                <input type="text" id="edit_first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_last_name">Last Name:</label>
+                <input type="text" id="edit_last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_email">Email:</label>
+                <input type="email" id="edit_email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_phone_number">Phone Number:</label>
+                <input type="text" id="edit_phone_number" name="phone_number" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_password">Password:</label>
+                <input type="password" id="edit_password" name="password">
+            </div>
+            <button type="submit" class="update-button">Update</button>
+        </form>
+    </div>
+</div>
+
 <?php include 'templates/footer.php'; ?>
 
 <script>
+
+
+function openEditModal(customerId, firstName, lastName, email, phoneNumber) {
+    document.getElementById('edit_customer_id').value = customerId;
+    document.getElementById('edit_first_name').value = firstName;
+    document.getElementById('edit_last_name').value = lastName;
+    document.getElementById('edit_email').value = email;
+    document.getElementById('edit_phone_number').value = phoneNumber;
+    document.getElementById('editCustomerModal').style.display = 'block';
+}
+
+function closeEditModal() {
+    document.getElementById('editCustomerModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('editCustomerModal');
+    if (event.target == modal) {
+        closeEditModal();
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the first tab as active
     document.querySelector('.tab-button').click();
