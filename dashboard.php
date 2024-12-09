@@ -5,7 +5,7 @@ session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     echo "User not logged in. Redirecting to login page...<br>";
     session_write_close();
-    header('Location: index.php');
+    header('Location: login.php');
     exit;
 }
 
@@ -56,7 +56,6 @@ include 'templates/nav.php';
         <?php elseif ($_SESSION['role'] === 'Mover'): ?>
             <!-- Assigned Bookings Panel for Mover -->
             <div class="panel" id="assigned-bookings-panel">
-                <h2>My Assigned Bookings</h2>
                 <?php include 'panels/assigned_bookings_panel.php'; ?>
             </div>
         <?php elseif ($_SESSION['role'] === 'Customer'): ?>

@@ -180,7 +180,7 @@ $unavailableDates = $unavailableDatesStmt->fetchAll(PDO::FETCH_COLUMN);
             <td><?php echo $row['Paid'] ? 'Yes' : 'No'; ?></td>
             <td><?php echo $row['Delivered'] ? 'Yes' : 'No'; ?></td>
             <td>
-                <a href="customer_messages.php?booking_id=<?php echo htmlspecialchars($row['BookingID']); ?>" class="message-button">
+                <a href="customer_messages.php?booking_id=<?php echo htmlspecialchars($row['BookingID']); ?>" class="message-button <?php echo $row['NewMessages'] > 0 ? 'flash' : ''; ?>">
                     Message
                     <?php if ($row['NewMessages'] > 0): ?>
                         <span class="new-message">!</span>

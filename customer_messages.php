@@ -40,6 +40,13 @@ $updateStmt = $db->prepare($updateQuery);
 $updateStmt->bindParam(':customer_id', $customer_id, PDO::PARAM_INT);
 $updateStmt->execute();
 
+function sendEmailNotification($to, $subject, $message) {
+    $headers = 'From: no-reply@movemenow.com' . "\r\n" .
+               'Reply-To: no-reply@movemenow.com' . "\r\n" .
+               'X-Mailer: PHP/' . phpversion();
+    mail($to, $subject, $message, $headers);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
     $message = trim($_POST['message']);
     if ($message) {
@@ -50,6 +57,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         $insertStmt->bindParam(':message', $message, PDO::PARAM_STR);
         $insertStmt->bindParam(':sender', $sender, PDO::PARAM_STR);
         $insertStmt->execute();
+
+        // Send email notification if the sender is an employee
+        if ($sender === 'Employee') {
+            $customerEmail = $customer['Email'];
+            $subject = 'New Message from MoveMeNow';
+            $emailMessage = "You have received a new message from MoveMeNow:\n\n" . $message;
+            sendEmailNotification($customerEmail, $subject, $emailMessage);
+        }
+
         header('Location: customer_messages.php?id=' . $customer_id);
         exit;
     }

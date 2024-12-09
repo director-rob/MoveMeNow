@@ -38,6 +38,10 @@ $customersQuery = '
     WHERE 1=1
 ';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL); 
+
 if ($search) {
     $customersQuery .= ' AND (C.FirstName LIKE :search OR C.LastName LIKE :search OR C.Email LIKE :search)';
 }

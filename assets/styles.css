@@ -28,6 +28,40 @@ h1 {
 	margin: 0 auto;
 	padding: 20px;
 }
+.three-column-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.three-column-container > div {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.three-column-container > div:first-child {
+    margin-left: 0;
+}
+
+.three-column-container > div:last-child {
+    margin-right: 0;
+}
+
+.booking-section, .move-details-section, .truck-details-section {
+    border: 1px solid #ccc;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .three-column-container {
+        flex-direction: column;
+    }
+
+    .three-column-container > div {
+        margin: 0 0 20px 0;
+    }
+}
+
 .dashboard-panels {
 	display: flex;
 	flex-wrap: wrap;
@@ -85,6 +119,7 @@ button{
     display: flex;
     gap: 10px;
 }
+
 
 .status-toggle {
     background-color: #4CAF50; /* Green for status toggle */
@@ -634,4 +669,35 @@ table tbody tr:hover::after {
 }
 #credit-card-section {
 	display: none;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #f1f1f1;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+footer p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #666;
+}
+
+.navbar {
+text-align: center;
+    position: fixed;
+    width: 97%;
+    top: 0;
+}
+
+@keyframes flash {
+    0% { background-color: #007bff; }
+    50% { background-color: #ff0000; }
+    100% { background-color: #007bff; }
+}
+
+.message-button.flash {
+    animation: flash 1s infinite;
 }

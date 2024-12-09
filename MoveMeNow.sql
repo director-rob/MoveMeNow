@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 07, 2024 at 07:47 PM
+-- Generation Time: Dec 09, 2024 at 02:38 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -35,24 +35,28 @@ CREATE TABLE `ArchivedBookings` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `BookingMovers`
+-- Table structure for table `bookingmovers`
 --
 
-CREATE TABLE `BookingMovers` (
+CREATE TABLE `bookingmovers` (
   `BookingID` int(11) NOT NULL,
   `MoverID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `BookingMovers`
+-- Dumping data for table `bookingmovers`
 --
 
-INSERT INTO `BookingMovers` (`BookingID`, `MoverID`) VALUES
-(2, 1),
-(3, 4),
-(3, 5),
+INSERT INTO `bookingmovers` (`BookingID`, `MoverID`) VALUES
+(6, 1),
+(6, 4),
+(6, 5),
+(7, 1),
+(7, 4),
+(7, 5),
+(7, 6),
 (1, 1),
-(1, 4);
+(1, 11);
 
 -- --------------------------------------------------------
 
@@ -71,17 +75,24 @@ CREATE TABLE `Bookings` (
   `BookingCompleted` tinyint(1) DEFAULT 0,
   `TimePickedUp` datetime DEFAULT NULL,
   `TimeDelivered` datetime DEFAULT NULL,
-  `MoveRequirements` text NOT NULL
+  `Instructions` text NOT NULL,
+  `MoveSize` varchar(32) NOT NULL,
+  `MoveWeight` int(11) NOT NULL,
+  `Paid` tinyint(1) NOT NULL,
+  `TotalCost` decimal(10,0) NOT NULL,
+  `CreatedDate` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Bookings`
 --
 
-INSERT INTO `Bookings` (`BookingID`, `Date`, `PickupAddress`, `Truck`, `DeliveryAddress`, `PickedUp`, `Delivered`, `BookingCompleted`, `TimePickedUp`, `TimeDelivered`, `MoveRequirements`) VALUES
-(1, '2024-12-06', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 1, 1, 0, NULL, NULL, ''),
-(2, '2024-12-07', 'address 1', 2, 'address 2', 1, 1, 0, NULL, NULL, ''),
-(3, '2024-12-05', 'address 1', 5, 'addres2', 0, 0, NULL, NULL, NULL, '');
+INSERT INTO `Bookings` (`BookingID`, `Date`, `PickupAddress`, `Truck`, `DeliveryAddress`, `PickedUp`, `Delivered`, `BookingCompleted`, `TimePickedUp`, `TimeDelivered`, `Instructions`, `MoveSize`, `MoveWeight`, `Paid`, `TotalCost`, `CreatedDate`) VALUES
+(1, '2024-12-08', '5500 180 St, Surrey, BC V3S 6R1', 1, '12666 72 Ave Surrey, BC V3W2M8', 0, 0, 0, NULL, NULL, '', '4-bedroom', 3000, 0, 0, '2024-12-08 15:10:34'),
+(2, '2024-12-10', 'address 1', 2, 'address 2', 0, 0, 0, NULL, NULL, '', '', 0, 0, 0, '2024-12-08 12:48:40'),
+(3, '2024-12-05', 'address 1', 5, 'addres2', 0, 0, 0, NULL, NULL, 'none', '', 0, 0, 0, '0000-00-00 00:00:00'),
+(6, '2024-12-14', '816 Peace Portal Dr, Blaine, wa, 98230', 1, '15263, 85 ave, Surrey, BC, V3S2P5', 0, 0, 0, NULL, NULL, 'hi there', '2-Bed Apartment', 2500, 0, 2415, '2024-12-08 12:48:44'),
+(7, '2024-12-18', '15263, 85 ave, Surrey, bc, V3S2P5', 1, '816 Peace Portal Dr, Blaine, wa, 98230', 1, 0, 0, NULL, NULL, 'hi', '3-Bed House', 3500, 0, 3385, '2024-12-08 17:10:12');
 
 -- --------------------------------------------------------
 
@@ -95,15 +106,16 @@ CREATE TABLE `Customers` (
   `FirstName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) DEFAULT NULL,
   `Email` varchar(100) DEFAULT NULL,
-  `Password` varchar(255) DEFAULT NULL
+  `Password` varchar(255) DEFAULT NULL,
+  `PhoneNumber` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Customers`
 --
 
-INSERT INTO `Customers` (`CustomerID`, `BookingID`, `FirstName`, `LastName`, `Email`, `Password`) VALUES
-(1, 1, 'Arlo', 'Vandelay', 'Arlo@email.com', '$2y$10$aDTXVNGiUvEHGtunx5okDOxIUGQzcA.4D4SLiZ21l1gUhFh8GOBfy');
+INSERT INTO `Customers` (`CustomerID`, `BookingID`, `FirstName`, `LastName`, `Email`, `Password`, `PhoneNumber`) VALUES
+(1, 7, 'Arlo', 'Vandelay', 'robert.cot800@gmail.com', '$2y$10$aDTXVNGiUvEHGtunx5okDOxIUGQzcA.4D4SLiZ21l1gUhFh8GOBfy', '');
 
 -- --------------------------------------------------------
 
@@ -133,7 +145,47 @@ INSERT INTO `Employees` (`EmployeeID`, `FirstName`, `LastName`, `DateJoined`, `R
 (6, 'Robert', 'Cioata', '2023-11-07', 'Mover', 'robertcioata', '$2y$10$Ue.nozWyvIRMcwjBXKq12OIUlGLsnKZO9K2qVRhb8beIzGC1FgiKC'),
 (11, 'Robert', 'Smith', '2024-11-12', 'Mover', 'robertsmith', '$2y$10$YFi83hR5S/0LhDzBum/SmOWheiz7SavNvRhayqzvkHx8ZE0D8rAU2'),
 (12, 'yica', 'smith', '2024-12-03', 'Mover', 'yicasmith', '$2y$10$tXBWf4FrT3DpEsQDPFEzTek2W48nD6a2pke4TRVvsm2Bh.rLBHdG2'),
-(14, 'Bill', 'Nye', '2011-01-03', 'Mover', 'billnye', '$2y$10$v2mxFwwS//Cbk5/O9/dT6.0dkHK5.qarV9.mFoH.QXiUtR3h.VYIK');
+(14, 'Bill', 'Nye', '2011-01-03', 'Mover', 'billnye', '$2y$10$v2mxFwwS//Cbk5/O9/dT6.0dkHK5.qarV9.mFoH.QXiUtR3h.VYIK'),
+(15, 'Martha', 'Stewart', '2024-11-25', 'Dispatcher', 'marthastewart', '$2y$10$VQkrJv26ap8hkqOqsrXrpON2UgZjl8U8.l2E2TGMgzw.Vj1JsWm16');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `MessageID` int(11) NOT NULL,
+  `CustomerID` int(11) NOT NULL,
+  `Message` text NOT NULL,
+  `SentAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `IsRead` tinyint(1) DEFAULT 0,
+  `Sender` varchar(24) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`MessageID`, `CustomerID`, `Message`, `SentAt`, `IsRead`, `Sender`) VALUES
+(4, 1, 'Hi I have a question.', '2024-12-08 19:07:01', 1, 'Customer'),
+(5, 1, 'What\'s your question?', '2024-12-09 00:27:55', 1, 'Employee'),
+(6, 1, 'How do I select a move?', '2024-12-09 00:32:37', 1, 'Customer'),
+(7, 1, 'You just have to go to the Submit a move section and submit a new form.', '2024-12-09 00:34:16', 1, 'Employee'),
+(8, 1, 'Then you\'re all good!', '2024-12-09 00:51:12', 1, 'Employee'),
+(9, 1, 'Cool, thanks.', '2024-12-09 00:53:16', 1, 'Customer'),
+(10, 1, 'Happy to Help!', '2024-12-09 00:56:01', 1, 'Employee');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `MoveRequests`
+--
+
+CREATE TABLE `MoveRequests` (
+  `CustomerID` int(11) NOT NULL,
+  `Message` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -202,11 +254,11 @@ ALTER TABLE `ArchivedBookings`
   ADD KEY `fk_archivedbookings_bookingid` (`BookingID`);
 
 --
--- Indexes for table `BookingMovers`
+-- Indexes for table `bookingmovers`
 --
-ALTER TABLE `BookingMovers`
-  ADD KEY `fk_booking` (`BookingID`),
-  ADD KEY `fk_mover` (`MoverID`);
+ALTER TABLE `bookingmovers`
+  ADD KEY `fk_mover` (`MoverID`),
+  ADD KEY `fk_booking` (`BookingID`);
 
 --
 -- Indexes for table `Bookings`
@@ -220,7 +272,7 @@ ALTER TABLE `Bookings`
 --
 ALTER TABLE `Customers`
   ADD PRIMARY KEY (`CustomerID`),
-  ADD KEY `fk_booking_customer` (`BookingID`);
+  ADD KEY `fk__bookingid` (`BookingID`);
 
 --
 -- Indexes for table `Employees`
@@ -228,6 +280,19 @@ ALTER TABLE `Customers`
 ALTER TABLE `Employees`
   ADD PRIMARY KEY (`EmployeeID`),
   ADD UNIQUE KEY `Username` (`Username`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`MessageID`),
+  ADD KEY `messages_ibfk_1` (`CustomerID`);
+
+--
+-- Indexes for table `MoveRequests`
+--
+ALTER TABLE `MoveRequests`
+  ADD KEY `fk_move_requests_customer` (`CustomerID`);
 
 --
 -- Indexes for table `Movers`
@@ -249,19 +314,19 @@ ALTER TABLE `Trucks`
 -- AUTO_INCREMENT for table `Bookings`
 --
 ALTER TABLE `Bookings`
-  MODIFY `BookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `Customers`
---
-ALTER TABLE `Customers`
-  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `BookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `Employees`
 --
 ALTER TABLE `Employees`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `MessageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `Movers`
@@ -286,10 +351,10 @@ ALTER TABLE `ArchivedBookings`
   ADD CONSTRAINT `fk_archivedbookings_bookingid` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `BookingMovers`
+-- Constraints for table `bookingmovers`
 --
-ALTER TABLE `BookingMovers`
-  ADD CONSTRAINT `fk_booking` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`),
+ALTER TABLE `bookingmovers`
+  ADD CONSTRAINT `fk_booking` FOREIGN KEY (`BookingID`) REFERENCES `bookings` (`BookingID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_mover` FOREIGN KEY (`MoverID`) REFERENCES `Movers` (`MoverID`);
 
 --
@@ -302,7 +367,20 @@ ALTER TABLE `Bookings`
 -- Constraints for table `Customers`
 --
 ALTER TABLE `Customers`
-  ADD CONSTRAINT `fk_booking_customer` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`);
+  ADD CONSTRAINT `fk__bookingid` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_booking` FOREIGN KEY (`BookingID`) REFERENCES `Bookings` (`BookingID`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `MoveRequests`
+--
+ALTER TABLE `MoveRequests`
+  ADD CONSTRAINT `fk_move_requests_customer` FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

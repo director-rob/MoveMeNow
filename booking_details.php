@@ -2,86 +2,95 @@
 require_once 'db.php';
 session_start();
 
+// Check if the user is logged in and has the correct role
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'Manager' && $_SESSION['role'] !== 'Dispatcher')) {
     header('Location: index.php');
     exit;
 }
 
+// Check if the booking ID is provided
+if (!isset($_GET['id'])) {
+    echo "Booking ID not provided.";
+    exit;
+}
+
+$booking_id = $_GET['id'];
+
+// Check if the booking is archived
 $isArchived = false;
 $query = 'SELECT * FROM ArchivedBookings WHERE BookingID = :booking_id';
 $stmt = $db->prepare($query);
-$stmt->bindParam(':booking_id', $booking['BookingID'], PDO::PARAM_INT);
+$stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
 $stmt->execute();
 if ($stmt->fetch(PDO::FETCH_ASSOC)) {
     $isArchived = true;
 }
 
-if (isset($_GET['id'])) {
-    $query = '
-        SELECT 
-            B.*,
-            C.CustomerID,
-            C.Email,
-            C.PhoneNumber,
-            C.FirstName,
-            C.LastName
-        FROM Bookings B
-        LEFT JOIN Customers C ON B.BookingID = C.BookingID
-        WHERE B.BookingID = :id
-    ';
-    
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
-    $stmt->execute();
-    
-    $booking = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$booking) {
-        echo "Booking not found.";
-        exit;
-    }
-    
-    // Fetch assigned movers
-    $moversQuery = '
-        SELECT M.MoverID, M.Name, M.ContactInfo, M.OtherDetails
-        FROM Movers M
-        JOIN BookingMovers BM ON M.MoverID = BM.MoverID
-        WHERE BM.BookingID = :id
-    ';
-    $moversStmt = $db->prepare($moversQuery);
-    $moversStmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
-    $moversStmt->execute();
-    $assignedMovers = $moversStmt->fetchAll(PDO::FETCH_ASSOC);
+// Fetch booking details
+$query = '
+    SELECT 
+        B.*,
+        C.CustomerID,
+        C.Email,
+        C.PhoneNumber,
+        C.FirstName,
+        C.LastName
+    FROM Bookings B
+    LEFT JOIN Customers C ON B.BookingID = C.BookingID
+    WHERE B.BookingID = :id
+';
+$stmt = $db->prepare($query);
+$stmt->bindParam(':id', $booking_id, PDO::PARAM_INT);
+$stmt->execute();
+$booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch all movers for selection
-    $allMoversQuery = 'SELECT MoverID, Name FROM Movers';
-    $allMoversStmt = $db->prepare($allMoversQuery);
-    $allMoversStmt->execute();
-    $allMovers = $allMoversStmt->fetchAll(PDO::FETCH_ASSOC);
+if (!$booking) {
+    echo "Booking not found.";
+    exit;
+}
 
-    // Fetch assigned trucks
-    $trucksQuery = '
-        SELECT T.TruckID, T.LicensePlate, T.Make, T.Model, T.SizeInFeet
-        FROM Trucks T
-        JOIN Bookings B ON T.TruckID = B.Truck
-        WHERE B.BookingID = :id
-    ';
-    $trucksStmt = $db->prepare($trucksQuery);
-    $trucksStmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
-    $trucksStmt->execute();
-    $assignedTruck = $trucksStmt->fetch(PDO::FETCH_ASSOC);
+// Fetch assigned movers
+$moversQuery = '
+    SELECT M.MoverID, M.Name, M.ContactInfo, M.OtherDetails
+    FROM Movers M
+    JOIN BookingMovers BM ON M.MoverID = BM.MoverID
+    WHERE BM.BookingID = :id
+';
+$moversStmt = $db->prepare($moversQuery);
+$moversStmt->bindParam(':id', $booking_id, PDO::PARAM_INT);
+$moversStmt->execute();
+$assignedMovers = $moversStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch all trucks for selection
-    $allTrucksQuery = 'SELECT TruckID, LicensePlate, Make, Model, SizeInFeet FROM Trucks';
-    $allTrucksStmt = $db->prepare($allTrucksQuery);
-    $allTrucksStmt->execute();
-    $allTrucks = $allTrucksStmt->fetchAll(PDO::FETCH_ASSOC);
+// Fetch all movers for selection
+$allMoversQuery = 'SELECT MoverID, Name FROM Movers';
+$allMoversStmt = $db->prepare($allMoversQuery);
+$allMoversStmt->execute();
+$allMovers = $allMoversStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Include header, nav, and footer
-    $pageTitle = 'Booking Details';
-    include 'templates/header.php';
-    include 'templates/nav.php';
-    ?>
+// Fetch assigned trucks
+$trucksQuery = '
+    SELECT T.TruckID, T.LicensePlate, T.Make, T.Model, T.SizeInFeet
+    FROM Trucks T
+    JOIN Bookings B ON T.TruckID = B.Truck
+    WHERE B.BookingID = :id
+';
+$trucksStmt = $db->prepare($trucksQuery);
+$trucksStmt->bindParam(':id', $booking_id, PDO::PARAM_INT);
+$trucksStmt->execute();
+$assignedTruck = $trucksStmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch all trucks for selection
+$allTrucksQuery = 'SELECT TruckID, LicensePlate, Make, Model, SizeInFeet FROM Trucks';
+$allTrucksStmt = $db->prepare($allTrucksQuery);
+$allTrucksStmt->execute();
+$allTrucks = $allTrucksStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Include header, nav, and footer
+$pageTitle = 'Booking Details';
+include 'templates/header.php';
+include 'templates/nav.php';
+?>
+
 
     <div class="container">
         <div class="booking-header">
@@ -433,7 +442,7 @@ if (isset($_GET['id'])) {
 
     <?php
     include 'templates/footer.php';
-}
+
 ?>
 
 <script>
