@@ -29,21 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $db->prepare($query);
             $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
             $stmt->execute();
-        } elseif ($action === 'undo_picked_up') {
-            // Undo picked up status
-            $query = 'UPDATE Bookings SET PickedUp = 0 WHERE BookingID = :booking_id';
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
-            $stmt->execute();
         } elseif ($action === 'delivered') {
             // Mark booking as delivered
             $query = 'UPDATE Bookings SET Delivered = 1 WHERE BookingID = :booking_id';
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
-            $stmt->execute();
-        } elseif ($action === 'undo_delivered') {
-            // Undo delivered status
-            $query = 'UPDATE Bookings SET Delivered = 0 WHERE BookingID = :booking_id';
             $stmt = $db->prepare($query);
             $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
             $stmt->execute();

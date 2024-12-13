@@ -30,33 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $weight_cost = $move_weight * 0.50;
     $total_cost = $base_cost + $weight_cost;
 
-    // Determine truck size
-    $truck_size = $move_weight <= 2000 ? 20 : 26; // 20-foot or 26-foot truck
-
-    // Determine number of movers
-    if ($move_weight <= 2000) {
-        $num_movers = 2;
-    } elseif ($move_weight <= 3000) {
-        $num_movers = 3;
-    } else {
-        $num_movers = 4;
-    }
-
-    // Check for surcharge
-    $move_sizes = [
-        '1-Bed Apartment' => 1000,
-        '2-Bed Apartment' => 2000,
-        '3-Bed House' => 3000,
-        '4-Bed House' => 5000
-    ];
-    $max_weight = $move_sizes[$move_size];
-    $surcharge = 0;
-    if ($move_weight > $max_weight) {
-        $surcharge = 0.10 * $total_cost;
-        $total_cost += $surcharge;
-    }
-
     // Calculate mover cost
+    $num_movers = 2; // Example number of movers
     $mover_cost = $num_movers * 50 * 4; // 4 hours
     $total_cost += $mover_cost;
 
@@ -64,10 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->beginTransaction();
 
         // Insert booking
-        $query = 'INSERT INTO Bookings (CustomerID, Date, PickupAddress, DeliveryAddress, MoveSize, MoveWeight, TotalCost, Truck, CreatedDate) 
-                 VALUES (:customer_id, :date, :pickup_address, :delivery_address, :move_size, :move_weight, :total_cost, :truck, :created_date)';
+        $query = 'INSERT INTO Bookings (Date, PickupAddress, DeliveryAddress, MoveSize, MoveWeight, TotalCost, Truck, CreatedDate, Instructions, Paid) 
+                 VALUES (:date, :pickup_address, :delivery_address, :move_size, :move_weight, :total_cost, :truck, :created_date, :instructions, :paid)';
         $stmt = $db->prepare($query);
-        $stmt->bindParam(':customer_id', $customer_id, PDO::PARAM_INT);
         $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         $stmt->bindParam(':pickup_address', $pickup_address, PDO::PARAM_STR);
         $stmt->bindParam(':delivery_address', $delivery_address, PDO::PARAM_STR);
@@ -76,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':total_cost', $total_cost, PDO::PARAM_STR);
         $stmt->bindParam(':truck', $truck_size, PDO::PARAM_INT);
         $stmt->bindParam(':created_date', $created_date, PDO::PARAM_STR);
+        $stmt->bindParam(':instructions', $instructions, PDO::PARAM_STR);
+        $stmt->bindValue(':paid', 1, PDO::PARAM_INT); // Set Paid to true (1)
         if (!$stmt->execute()) {
             throw new Exception("Failed to insert booking.");
         }
@@ -95,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Failed to update customer's BookingID.");
         }
 
-        // Assign movers
+        // Assign movers (example logic)
         $moversQuery = "
             SELECT MoverID
             FROM Movers

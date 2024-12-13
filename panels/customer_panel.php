@@ -72,81 +72,95 @@ $unavailableDates = $unavailableDatesStmt->fetchAll(PDO::FETCH_COLUMN);
                 <div class="form-group">
                     <label for="date">Date:</label>
                     <input type="date" id="date" name="date" required>
-                </div>
-                <div class="address-section">
-                    <div class="address-group">
-                        <h3>Pickup Address</h3>
-                        <div class="form-group">
-                            <label for="pickup_street">Street:</label>
-                            <input type="text" id="pickup_street" name="pickup_street" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="pickup_city">City:</label>
-                            <input type="text" id="pickup_city" name="pickup_city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="pickup_state">State:</label>
-                            <input type="text" id="pickup_state" name="pickup_state" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="pickup_postal_code">Postal Code:</label>
-                            <input type="text" id="pickup_postal_code" name="pickup_postal_code" required>
-                        </div>
-                    </div>
-                    <div class="address-group">
-                        <h3>Delivery Address</h3>
-                        <div class="form-group">
-                            <label for="delivery_street">Street:</label>
-                            <input type="text" id="delivery_street" name="delivery_street" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="delivery_city">City:</label>
-                            <input type="text" id="delivery_city" name="delivery_city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="delivery_state">State:</label>
-                            <input type="text" id="delivery_state" name="delivery_state" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="delivery_postal_code">Postal Code:</label>
-                            <input type="text" id="delivery_postal_code" name="delivery_postal_code" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="move_size">Move Size:</label>
-                    <select id="move_size" name="move_size" required>
-                        <option value="1-Bed Apartment">1-Bed Apartment</option>
-                        <option value="2-Bed Apartment">2-Bed Apartment</option>
-                        <option value="3-Bed House">3-Bed House</option>
-                        <option value="4-Bed House">4-Bed House</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="move_weight">Move Weight (kg):</label>
-                    <select id="move_weight" name="move_weight" required>
-                        <option value="500">500 kg</option>
-                        <option value="1000">1000 kg</option>
-                        <option value="1500">1500 kg</option>
-                        <option value="2000">2000 kg</option>
-                        <option value="2500">2500 kg</option>
-                        <option value="3000">3000 kg</option>
-                        <option value="3500">3500 kg</option>
-                        <option value="4000">4000 kg</option>
-                        <option value="4500">4500 kg</option>
-                        <option value="5000">5000 kg</option>
-                        <option value="custom">Custom</option>
-                    </select>
-                    <input type="number" id="custom_move_weight" name="custom_move_weight" min="500" style="display:none;" placeholder="Enter custom weight">
-                </div>
-                <div class="form-group">
-                    <label for="instructions">Instructions:</label>
-                    <textarea id="instructions" name="instructions" rows="3"></textarea>
-                </div>
-                <button type="submit">Submit</button>
-            </form>
         </div>
-    </div>
+        <div class="address-section">
+            <div class="address-group">
+                <h3>Pickup Address</h3>
+                <div class="form-group">
+                    <label for="pickup_street">Street:</label>
+                    <input type="text" id="pickup_street" name="pickup_street" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickup_city">City:</label>
+                    <input type="text" id="pickup_city" name="pickup_city" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickup_state">State:</label>
+                    <input type="text" id="pickup_state" name="pickup_state" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickup_postal_code">Postal Code:</label>
+                    <input type="text" id="pickup_postal_code" name="pickup_postal_code" required>
+                </div>
+            </div>
+            <div class="address-group">
+                <h3>Delivery Address</h3>
+                <div class="form-group">
+                    <label for="delivery_street">Street:</label>
+                    <input type="text" id="delivery_street" name="delivery_street" required>
+                </div>
+                <div class="form-group">
+                    <label for="delivery_city">City:</label>
+                    <input type="text" id="delivery_city" name="delivery_city" required>
+                </div>
+                <div class="form-group">
+                    <label for="delivery_state">State:</label>
+                    <input type="text" id="delivery_state" name="delivery_state" required>
+                </div>
+                <div class="form-group">
+                    <label for="delivery_postal_code">Postal Code:</label>
+                    <input type="text" id="delivery_postal_code" name="delivery_postal_code" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="move_size">Move Size:</label>
+            <select id="move_size" name="move_size" required>
+                <option value="1-Bed Apartment">1-Bed Apartment</option>
+                <option value="2-Bed Apartment">2-Bed Apartment</option>
+                <option value="3-Bed House">3-Bed House</option>
+                <option value="4-Bed House">4-Bed House</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="move_weight">Move Weight (kg):</label>
+            <select id="move_weight" name="move_weight" required>
+                <option value="500">500 kg</option>
+                <option value="1000">1000 kg</option>
+                <option value="1500">1500 kg</option>
+                <option value="2000">2000 kg</option>
+                <option value="2500">2500 kg</option>
+                <option value="3000">3000 kg</option>
+                <option value="3500">3500 kg</option>
+                <option value="4000">4000 kg</option>
+                <option value="4500">4500 kg</option>
+                <option value="5000">5000 kg</option>
+                <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="custom_move_weight" name="custom_move_weight" min="500" style="display:none;" placeholder="Enter custom weight">
+        </div>
+        <div class="form-group">
+            <label for="instructions">Instructions:</label>
+            <textarea id="instructions" name="instructions" rows="4"></textarea>
+        </div>
+        <button type="button" id="calculate-cost" class="submit-button">Calculate Cost</button>
+        <div id="total-cost"></div>
+        <div id="credit-card-section" style="display: none;">
+            <div class="form-group">
+                <label for="credit_card_number">Credit Card Number:</label>
+                <input type="text" id="credit_card_number" name="credit_card_number" pattern="\d{16}" required>
+            </div>
+            <div class="form-group">
+                <label for="credit_card_expiry">Expiry Date (MM/YY):</label>
+                <input type="text" id="credit_card_expiry" name="credit_card_expiry" pattern="\d{2}/\d{2}" required>
+            </div>
+            <div class="form-group">
+                <label for="credit_card_cvc">Security Code (CVC):</label>
+                <input type="text" id="credit_card_cvc" name="credit_card_cvc" pattern="\d{3}" required>
+            </div>
+            <button type="button" id="confirm-booking" class="submit-button">Confirm Booking</button>
+        </div>
+    </form>
 </div>
 
     <h3>My Bookings</h3>
@@ -329,5 +343,98 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-        
-    </script>
+// Existing JavaScript code
+
+document.addEventListener('DOMContentLoaded', function() {
+    const unavailableDates = <?php echo json_encode($unavailableDates); ?>;
+    const dateInput = document.getElementById('date');
+    dateInput.addEventListener('input', function() {
+        const selectedDate = this.value;
+        if (unavailableDates.includes(selectedDate)) {
+            alert('Selected date is fully booked. Please choose another date.');
+            this.value = '';
+        }
+    });
+
+    const moveWeightSelect = document.getElementById('move_weight');
+    moveWeightSelect.addEventListener('change', function() {
+        const customWeightInput = document.getElementById('custom_move_weight');
+        if (this.value === 'custom') {
+            customWeightInput.style.display = 'block';
+            customWeightInput.required = true;
+        } else {
+            customWeightInput.style.display = 'none';
+            customWeightInput.required = false;
+        }
+    });
+
+    // Add event listeners for cost calculation and booking confirmation
+    document.getElementById('calculate-cost').addEventListener('click', function(event) {
+        event.preventDefault();
+        calculateTotalCost();
+    });
+
+    document.getElementById('confirm-booking').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('booking-form').submit();
+    });
+
+    // Existing code to initialize collapsible sections
+    const sections = document.querySelectorAll('.collapsible-section');
+    sections.forEach(section => {
+        section.classList.add('collapsed');
+    });
+});
+
+// Function to calculate total cost
+function calculateTotalCost() {
+    const moveSize = document.getElementById('move_size').value;
+    const moveWeight = document.getElementById('move_weight').value === 'custom'
+        ? document.getElementById('custom_move_weight').value
+        : document.getElementById('move_weight').value;
+    const baseCosts = {
+        '1-Bed Apartment': 200,
+        '2-Bed Apartment': 400,
+        '3-Bed House': 600,
+        '4-Bed House': 800
+    };
+    const weightCost = moveWeight * 0.50;
+    let totalCost = baseCosts[moveSize] + weightCost;
+
+    const maxWeights = {
+        '1-Bed Apartment': 1000,
+        '2-Bed Apartment': 2000,
+        '3-Bed House': 3000,
+        '4-Bed House': 5000
+    };
+    if (moveWeight > maxWeights[moveSize]) {
+        totalCost += 0.10 * totalCost;
+    }
+
+    const numMovers = moveWeight <= 2000 ? 2 : moveWeight <= 3000 ? 3 : 4;
+    const moverCost = numMovers * 50 * 4; // 4 hours
+    totalCost += moverCost;
+
+    document.getElementById('total-cost').innerText = 'Total Cost: $' + totalCost.toFixed(2);
+    document.getElementById('credit-card-section').style.display = 'block';
+}
+
+// Existing functions for modals and other features
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('activityLogModal');
+    if (event.target == modal) {
+        closeModal('activityLogModal');
+    }
+};
+
+// Existing code remains intact
+</script>
